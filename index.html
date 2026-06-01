@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pulso 2026 · Modelo de Segunda Vuelta</title>
+
+<!-- social meta -->
+<meta name="description" content="Modelo interactivo de segunda vuelta presidencial Colombia 2026. De La Espriella 43.7% vs Cepeda 40.9% · mueve los supuestos y ve a dónde van los votos.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pulso 2026 · Modelo de Segunda Vuelta Colombia">
+<meta property="og:description" content="Mueve los supuestos y mira a dónde van los votos. De La Espriella 43.7% vs Cepeda 40.9% en primera vuelta · balotaje 21 jun 2026.">
+<meta property="og:url" content="https://cvanegas.github.io/elecciones-colombia-2026/">
+<meta property="og:site_name" content="Pulso 2026">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pulso 2026 · Modelo de Segunda Vuelta Colombia">
+<meta name="twitter:description" content="Mueve los supuestos y mira a dónde van los votos. De La Espriella 43.7% vs Cepeda 40.9% · balotaje 21 jun 2026.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -29,8 +41,11 @@
     text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:center}
   .kicker::before{content:"";width:24px;height:1px;background:var(--abe)}
   h1{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(34px,7vw,58px);
-    line-height:1;letter-spacing:-.02em;margin:10px 0 6px}
+    line-height:1;letter-spacing:-.02em;margin:10px 0 5px}
   h1 em{font-style:italic;color:var(--abe)}
+  .byline{font-size:12px;color:var(--muted);margin-bottom:12px}
+  .byline a{color:var(--abe);text-decoration:none}
+  .byline a:hover{text-decoration:underline}
   .sub{color:var(--muted);max-width:62ch;font-size:14.5px}
   .sub b{color:var(--cream);font-weight:600}
   .stamp{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.04em;
@@ -74,8 +89,6 @@
   .hist-axis{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;
     font-size:9.5px;color:var(--muted);margin-top:4px}
 
-
-
   .presets{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 22px;animation:rise .7s .1s ease both}
   .presets button{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.05em;
     background:var(--panel);color:var(--muted);border:1px solid var(--line);
@@ -87,7 +100,7 @@
     text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
   .controls{display:grid;gap:14px}
   .bloc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-  .bloc-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:12px}
+  .bloc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:12px}
   .bloc-name{font-weight:600;font-size:15px}
   .bloc-name small{display:block;color:var(--muted);font-weight:400;font-size:12px;margin-top:1px;max-width:54ch}
   .pool{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--cream);
@@ -114,28 +127,59 @@
   .note{background:var(--abe-soft);border:1px solid #5a4012;border-radius:10px;padding:12px 14px;font-size:12px;color:#e8d3a8;margin-top:14px}
   footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.7}
   footer b{color:var(--cream)}
-  .credits{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
-  .credits-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px}
-  .credits a{color:var(--abe);text-decoration:none}
-  .credits a:hover{text-decoration:underline}
-  .repo-link{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;
-    background:var(--panel);border:1px solid var(--line);padding:6px 12px;border-radius:999px;
-    color:var(--cream) !important;transition:.18s}
-  .repo-link:hover{border-color:var(--abe) !important}
-  .disc{font-size:11px;color:var(--muted);font-style:italic;opacity:.8}
+  .disc{font-size:11px;color:var(--muted);font-style:italic;opacity:.8;display:block;margin-top:10px}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
     background:var(--abe);color:#1a1206;font-weight:700;font-family:"JetBrains Mono",monospace;font-size:12px;
     padding:11px 18px;border-radius:999px;opacity:0;transition:.3s;pointer-events:none;z-index:50}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @media(max-width:560px){.regions{grid-template-columns:1fr}}
+
+  /* sticky bar */
+  .sticky-bar{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(21,17,12,.93);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    padding:9px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    font-family:"JetBrains Mono",monospace;font-size:12px;
+    transform:translateY(-110%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    pointer-events:none;
+  }
+  .sticky-bar.visible{transform:translateY(0);pointer-events:auto}
+  .sb-scores{display:flex;align-items:center;gap:12px}
+  .sb-a{color:var(--abe);font-weight:700}
+  .sb-c{color:var(--cep);font-weight:700}
+  .sb-vs{color:var(--line);font-size:11px}
+  .sb-prob{color:var(--muted);font-size:11px;text-align:right}
+  .sb-prob b{font-weight:700}
+  @media(max-width:480px){.sb-prob{display:none}}
+
+  /* accordion */
+  .bloc-head.toggle{cursor:pointer;user-select:none}
+  .chev{font-size:12px;color:var(--muted);transition:transform .25s;display:inline-block;margin-left:6px;line-height:1;flex-shrink:0}
+  .bloc.collapsed .chev{transform:rotate(-90deg)}
+  .bloc-body{overflow:hidden;transition:max-height .32s ease, opacity .22s;max-height:500px;opacity:1}
+  .bloc.collapsed .bloc-body{max-height:0;opacity:0}
+  .bloc.collapsed .bloc-head{margin-bottom:0}
 </style>
 </head>
 <body>
+
+<div class="sticky-bar" id="stickyBar">
+  <div class="sb-scores">
+    <span class="sb-a"><span id="sb-pa">—</span> Abelardo</span>
+    <span class="sb-vs">vs</span>
+    <span class="sb-c">Cepeda <span id="sb-pc">—</span></span>
+  </div>
+  <div class="sb-prob" id="sb-prob">—</div>
+</div>
+
 <div class="wrap">
   <header>
     <div class="kicker">Colombia · Balotaje 21 de junio 2026</div>
     <h1>Pulso <em>2026</em></h1>
+    <p class="byline">por <a href="mailto:cavanegas@gmail.com">Carlos Vanegas</a> · con Claude Opus 4.8 (Anthropic) · <a href="https://github.com/cvanegas/elecciones-colombia-2026" target="_blank">ver código</a></p>
     <p class="sub">Modelo interactivo de la segunda vuelta. Mueve los supuestos y mira a dónde van los votos, cuántos son, qué tan probable es cada desenlace y cómo se pinta el mapa. Punto de partida (preconteo casi final): <b>De La Espriella 43.7%</b> vs <b>Cepeda 40.9%</b> · participación récord de <b>~24M</b> sobre un censo de <b>41.4M</b>.</p>
     <div class="stamp" id="stamp">Datos al 1 jun 2026 · preconteo ≈99.8% de mesas · resultados preliminares y en disputa</div>
     <div class="actions">
@@ -144,7 +188,7 @@
     </div>
   </header>
 
-  <div class="grid">
+  <div class="grid" id="mainGrid">
     <div class="card">
       <h3>Proyección nacional</h3>
       <div class="verdict" id="verdict">—</div>
@@ -165,8 +209,6 @@
       <div class="hist-axis"><span>45% Abe</span><span>50%</span><span>60%+</span></div>
     </div>
   </div>
-
-
 
   <div class="presets" id="presets">
     <button data-p="base" class="on">Caso base</button>
@@ -211,14 +253,8 @@
 
   <footer>
     <b>Cómo funciona.</b> Parte de los resultados de primera vuelta, reparte los votos de cada eliminado entre los dos finalistas (según cuántos se quedan en casa, cuántos votan en blanco y cómo se dividen los que sí votan por algún candidato), ajusta por el retorno de cada base y por la maquinaria, y convierte todo a votos sobre un censo de 41.4M. La probabilidad sale de 2.000 simulaciones que sacuden cada supuesto dentro de un rango razonable. Para conversar entre amigos: muevan los supuestos y discutan.<br><br>
-    <b>Advertencias.</b> Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas un poco, aunque rara vez cambia el orden. Participación récord, ~2.4M de votos más que en 2022. Las líneas base por departamento son estimaciones ilustrativas, no cifras oficiales. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación.<br><br>
-    <div class="credits">
-      <div class="credits-row">
-        <span>Construido por <a href="mailto:cavanegas@gmail.com">Carlos Vanegas</a> con ayuda de Claude Opus 4.8 (Anthropic).</span>
-        <a href="https://github.com/cvanegas/elecciones-colombia-2026" target="_blank" class="repo-link">⌥ Ver código en GitHub</a>
-      </div>
-      <div class="disc">No representa la posición de mi empleador ni de ninguna campaña política. Este modelo puede contener errores. Úsalo bajo tu propio criterio.</div>
-    </div>
+    <b>Advertencias.</b> Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas un poco, aunque rara vez cambia el orden. Participación récord, ~2.4M de votos más que en 2022. Las líneas base por departamento son estimaciones ilustrativas, no cifras oficiales. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación.
+    <span class="disc">No representa la posición de mi empleador ni de ninguna campaña política. Este modelo puede contener errores. Úsalo bajo tu propio criterio.</span>
   </footer>
 </div>
 <div class="toast" id="toast">Enlace copiado</div>
@@ -263,20 +299,53 @@ function resolve(p){const c={retA:p.retA,retC:p.retC,machine:p.machine};BLOCS.fo
 function fmtM(v){return (v/1e6).toFixed(2)+"M";}
 function fmtK(v){return Math.round(v).toLocaleString('es-CO');}
 
+// animated value counter
+const _anim = {};
+function animateVal(id, target, fmt, dur){
+  dur = dur || 270;
+  const el = document.getElementById(id);
+  if(!el) return;
+  if(_anim[id]) cancelAnimationFrame(_anim[id].raf);
+  const from = (_anim[id] && _anim[id].cur != null) ? _anim[id].cur : target;
+  const t0 = performance.now();
+  _anim[id] = {cur: from, raf: null};
+  function tick(now){
+    const p = Math.min(1, (now - t0) / dur);
+    const v = from + (target - from) * (1 - Math.pow(1 - p, 3));
+    _anim[id].cur = v;
+    el.textContent = fmt(v);
+    if(p < 1) _anim[id].raf = requestAnimationFrame(tick);
+    else _anim[id].cur = target;
+  }
+  _anim[id].raf = requestAnimationFrame(tick);
+}
+
 // ---- build bloc UI ----
 const blocsEl=document.getElementById("blocs");
 BLOCS.forEach(b=>{
   const el=document.createElement("div"); el.className="bloc";
-  el.innerHTML=`<div class="bloc-head"><div class="bloc-name">${b.name}<small>${b.desc}</small></div>
-    <div class="pool">${b.pct.toFixed(1)}% · ${fmtM(b.pool)}</div></div>
-    <div class="ctrl"><div class="lab"><span>Se queda en casa</span><span class="val" id="${b.id}-av">0%</span></div>
-      <input type="range" id="${b.id}-abst" min="0" max="100" step="1" value="0"></div>
-    <div class="ctrl"><div class="lab"><span>Vota en blanco</span><span class="val blk" id="${b.id}-bv">0%</span></div>
-      <input type="range" class="blank" id="${b.id}-blank" min="0" max="60" step="1" value="0"></div>
-    <div class="ctrl"><div class="lab"><span>De los que votan por alguno</span><span class="val" id="${b.id}-sv">0% Abe</span></div>
-      <input type="range" class="split" id="${b.id}-share" min="0" max="100" step="1" value="0">
-      <div class="ends"><span class="l">◄ Cepeda</span><span class="r">Abelardo ►</span></div></div>`;
+  el.innerHTML=`
+    <div class="bloc-head toggle">
+      <div class="bloc-name">${b.name}<small>${b.desc}</small></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <div class="pool">${b.pct.toFixed(1)}% · ${fmtM(b.pool)}</div>
+        <span class="chev">▾</span>
+      </div>
+    </div>
+    <div class="bloc-body">
+      <div class="ctrl"><div class="lab"><span>Se queda en casa</span><span class="val" id="${b.id}-av">0%</span></div>
+        <input type="range" id="${b.id}-abst" min="0" max="100" step="1" value="0"></div>
+      <div class="ctrl"><div class="lab"><span>Vota en blanco</span><span class="val blk" id="${b.id}-bv">0%</span></div>
+        <input type="range" class="blank" id="${b.id}-blank" min="0" max="60" step="1" value="0"></div>
+      <div class="ctrl"><div class="lab"><span>De los que votan por alguno</span><span class="val" id="${b.id}-sv">0% Abe</span></div>
+        <input type="range" class="split" id="${b.id}-share" min="0" max="100" step="1" value="0">
+        <div class="ends"><span class="l">◄ Cepeda</span><span class="r">Abelardo ►</span></div></div>
+    </div>`;
   blocsEl.appendChild(el);
+
+  el.querySelector('.bloc-head.toggle').addEventListener('click', () => el.classList.toggle('collapsed'));
+  if(window.innerWidth <= 760) el.classList.add('collapsed');
+
   el.querySelector(`#${b.id}-abst`).addEventListener("input",e=>{state[b.id].abst=+e.target.value;syncBloc(b.id);recompute();});
   el.querySelector(`#${b.id}-blank`).addEventListener("input",e=>{state[b.id].blank=+e.target.value;syncBloc(b.id);recompute();});
   el.querySelector(`#${b.id}-share`).addEventListener("input",e=>{state[b.id].share=+e.target.value;syncBloc(b.id);recompute();});
@@ -285,7 +354,8 @@ function syncBloc(id){
   document.getElementById(id+"-av").textContent=state[id].abst+"%";
   document.getElementById(id+"-bv").textContent=state[id].blank+"%";
   const s=state[id].share;
-  document.getElementById(id+"-sv").textContent=s+"% Abe · "+(100-s)+"% Cep";
+  document.getElementById(id+"-sv").innerHTML=
+    `<span style="color:var(--abe)">${s}% Abe</span> · <span style="color:var(--cep)">${100-s}% Cep</span>`;
 }
 ["retA","retC"].forEach(k=>{
   document.getElementById(k).addEventListener("input",e=>{state[k]=+e.target.value;document.getElementById(k+"-v").textContent=state[k]+"%";recompute();});
@@ -309,20 +379,22 @@ function paintProb(){
   const r=monteCarlo(2000);
   const pAbe=r.p, fav=pAbe>=50?"De La Espriella":"Cepeda", pv=pAbe>=50?pAbe:100-pAbe;
   const col=pAbe>=50?"var(--abe)":"var(--cep)";
-  document.getElementById("probNum").textContent=pv.toFixed(0)+"%";
   document.getElementById("probNum").style.color=col;
+  animateVal("probNum", pv, v=>v.toFixed(0)+"%");
   document.getElementById("probLab").innerHTML=`probabilidad de que gane <b style="color:${col}">${fav}</b><br><span style="font-family:'JetBrains Mono',monospace;font-size:11px">de ${r.N} simulaciones con supuestos sacudidos</span>`;
   const mx=Math.max(...r.bins);
   const hist=document.getElementById("hist"); hist.innerHTML="";
   r.bins.forEach((c,i)=>{const share=45+i*(15/20);const d=document.createElement("div");d.className="bin";
     d.style.height=(c/mx*100)+"%";d.style.background=share>=50?"var(--abe)":"var(--cep)";d.style.opacity=0.55+0.45*(c/mx);hist.appendChild(d);});
+  const shortFav=pAbe>=50?"Abe":"Cep";
+  document.getElementById("sb-prob").innerHTML=`prob. <b style="color:${col}">${pv.toFixed(0)}% ${shortFav}</b>`;
 }
 
 // ---- main recompute ----
 function recompute(){
   const m=modelFor(cloneState());
-  document.getElementById("pa").textContent=m.pa.toFixed(1)+"%";
-  document.getElementById("pc").textContent=m.pc.toFixed(1)+"%";
+  animateVal("pa", m.pa, v=>v.toFixed(1)+"%");
+  animateVal("pc", m.pc, v=>v.toFixed(1)+"%");
   document.getElementById("va").textContent="≈ "+fmtM(m.abeV)+" votos";
   document.getElementById("vc").textContent="≈ "+fmtM(m.cepV)+" votos";
   document.getElementById("ba").style.width=m.pa+"%";
@@ -338,6 +410,9 @@ function recompute(){
     `Margen <b>${lead.toFixed(1)} pts</b> · <b>${fmtK(vmar)}</b> votos<br>`+
     `Voto en blanco <b>~${fmtM(m.blancos)}</b> (<b>${blkPct.toFixed(1)}%</b> de votos válidos)<br>`+
     `Total proyectado <b>${fmtM(m.total+m.blancos)}</b> · participación implícita <b>${m.turnout.toFixed(1)}%</b> del censo`;
+  document.getElementById("sb-pa").textContent=m.pa.toFixed(1)+"%";
+  document.getElementById("sb-pc").textContent=m.pc.toFixed(1)+"%";
+  history.replaceState(null,"","#s="+encodeState());
   paintProb();
 }
 
@@ -384,6 +459,12 @@ document.getElementById("shareBtn").addEventListener("click",()=>{
   const done=()=>{t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1600);};
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,done);}else{done();}
 });
+
+// ---- sticky bar ----
+const stickyBar=document.getElementById("stickyBar");
+new IntersectionObserver(entries=>{
+  stickyBar.classList.toggle("visible",!entries[0].isIntersecting);
+},{threshold:0}).observe(document.getElementById("mainGrid"));
 
 // ---- init ----
 (function init(){
