@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulso 2026 · Modelo de Segunda Vuelta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#15110C; --panel:#1F1A13; --panel-2:#262017; --line:#3A3125;
+    --cream:#F1E8D8; --muted:#A89578;
+    --abe:#E2922E; --abe-soft:#3a2c16; --cep:#34B6A4; --cep-soft:#13322e; --warn:#D8643C;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 600px at 12% -10%, #2a2013 0%, transparent 55%),
+      radial-gradient(1000px 700px at 112% 8%, #11302c 0%, transparent 50%),
+      var(--bg);
+    color:var(--cream); font-family:"Libre Franklin",system-ui,sans-serif; line-height:1.5;
+    -webkit-font-smoothing:antialiased; min-height:100vh;
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:30px 18px 80px}
+  header{animation:rise .7s ease both}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:center}
+  .kicker::before{content:"";width:24px;height:1px;background:var(--abe)}
+  h1{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(34px,7vw,58px);
+    line-height:1;letter-spacing:-.02em;margin:10px 0 6px}
+  h1 em{font-style:italic;color:var(--abe)}
+  .sub{color:var(--muted);max-width:62ch;font-size:14.5px}
+  .sub b{color:var(--cream);font-weight:600}
+  .stamp{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.04em;
+    color:var(--warn);margin-top:10px;display:inline-block;
+    border:1px solid #5a3a2a;background:#2a1a12;padding:5px 10px;border-radius:7px}
+
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 6px}
+  .btn{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;
+    background:var(--panel);color:var(--cream);border:1px solid var(--line);
+    padding:9px 14px;border-radius:999px;cursor:pointer;transition:.18s}
+  .btn:hover{border-color:var(--abe)}
+  .btn.share{background:var(--abe);color:#1a1206;border-color:var(--abe);font-weight:700}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:linear-gradient(180deg,var(--panel-2),var(--panel));
+    border:1px solid var(--line);border-radius:18px;padding:22px;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,.7);animation:rise .7s .05s ease both}
+  .card h3{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+
+  .verdict{font-family:"Fraunces",serif;font-style:italic;font-size:clamp(17px,3vw,22px);margin-bottom:16px}
+  .verdict span{font-style:normal;font-weight:900}
+  .names{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:12.5px;margin-bottom:8px}
+  .nm-a{color:var(--abe)} .nm-c{color:var(--cep);text-align:right}
+  .nm-a b,.nm-c b{display:block;font-size:28px}
+  .nm-a .v,.nm-c .v{font-size:11px;color:var(--muted);font-weight:500}
+  .bar{height:28px;border-radius:8px;overflow:hidden;display:flex;background:#0d0a06;border:1px solid var(--line)}
+  .bar .a{background:linear-gradient(90deg,#b9701d,var(--abe));transition:width .5s cubic-bezier(.4,0,.1,1)}
+  .bar .c{background:linear-gradient(90deg,var(--cep),#1d8073);transition:width .5s cubic-bezier(.4,0,.1,1)}
+  .fifty{position:relative;height:0}
+  .fifty .tick{position:absolute;left:50%;top:-28px;height:28px;border-left:1px dashed rgba(241,232,216,.55);z-index:3}
+  .margin{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--muted);margin-top:18px;line-height:1.7}
+  .margin b{color:var(--cream)}
+
+  /* probability */
+  .prob-num{font-family:"Fraunces",serif;font-weight:900;font-size:54px;line-height:1}
+  .prob-lab{font-size:13px;color:var(--muted);margin-top:2px}
+  .hist{display:flex;align-items:flex-end;gap:2px;height:70px;margin-top:16px}
+  .hist .bin{flex:1;border-radius:2px 2px 0 0;min-height:1px;transition:height .3s}
+  .hist-axis{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;
+    font-size:9.5px;color:var(--muted);margin-top:4px}
+
+
+
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 22px;animation:rise .7s .1s ease both}
+  .presets button{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.05em;
+    background:var(--panel);color:var(--muted);border:1px solid var(--line);
+    padding:9px 13px;border-radius:999px;cursor:pointer;transition:.18s}
+  .presets button:hover{color:var(--cream);border-color:var(--abe)}
+  .presets button.on{background:var(--abe);color:#1a1206;border-color:var(--abe);font-weight:700}
+
+  .sec-title{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
+  .controls{display:grid;gap:14px}
+  .bloc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .bloc-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:12px}
+  .bloc-name{font-weight:600;font-size:15px}
+  .bloc-name small{display:block;color:var(--muted);font-weight:400;font-size:12px;margin-top:1px;max-width:54ch}
+  .pool{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--cream);
+    background:var(--panel-2);border:1px solid var(--line);padding:3px 9px;border-radius:7px;white-space:nowrap}
+  .ctrl{margin-top:12px}
+  .ctrl .lab{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px}
+  .ctrl .lab .val{font-family:"JetBrains Mono",monospace;color:var(--cream)}
+  .ends{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;margin-top:3px}
+  .ends .l{color:var(--cep)} .ends .r{color:var(--abe)}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;
+    background:#0d0a06;outline:none;cursor:pointer;border:1px solid var(--line)}
+  input[type=range].split{background:linear-gradient(90deg,var(--cep-soft),var(--abe-soft))}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+    background:var(--cream);border:3px solid #15110c;box-shadow:0 2px 6px rgba(0,0,0,.5)}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--cream);border:3px solid #15110c}
+
+  .regions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+  .reg{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .reg h4{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .reg.a h4{color:var(--abe)} .reg.c h4{color:var(--cep)}
+  .reg p{font-size:13px;color:var(--muted)}
+  .note{background:var(--abe-soft);border:1px solid #5a4012;border-radius:10px;padding:12px 14px;font-size:12px;color:#e8d3a8;margin-top:14px}
+  footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.7}
+  footer b{color:var(--cream)}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--abe);color:#1a1206;font-weight:700;font-family:"JetBrains Mono",monospace;font-size:12px;
+    padding:11px 18px;border-radius:999px;opacity:0;transition:.3s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @media(max-width:560px){.regions{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Colombia · Balotaje 21 de junio 2026</div>
+    <h1>Pulso <em>2026</em></h1>
+    <p class="sub">Modelo interactivo de la segunda vuelta. Mueve los supuestos y mira a dónde van los votos, cuántos son, qué tan probable es cada desenlace y cómo se pinta el mapa. Punto de partida (preconteo casi final): <b>De La Espriella 43.7%</b> vs <b>Cepeda 40.9%</b> · participación récord de <b>~24M</b> sobre un censo de <b>41.4M</b>.</p>
+    <div class="stamp" id="stamp">Datos al 1 jun 2026 · preconteo ≈99.8% de mesas · resultados preliminares y en disputa</div>
+    <div class="actions">
+      <button class="btn share" id="shareBtn">⬡ Copiar enlace para compartir</button>
+      <button class="btn" id="resetBtn">↺ Volver al caso base</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Proyección nacional</h3>
+      <div class="verdict" id="verdict">—</div>
+      <div class="names">
+        <div class="nm-a">Abelardo de la Espriella<b id="pa">—</b><span class="v" id="va"></span></div>
+        <div class="nm-c">Iván Cepeda<b id="pc">—</b><span class="v" id="vc"></span></div>
+      </div>
+      <div class="fifty"><div class="tick"></div></div>
+      <div class="bar"><div class="a" id="ba"></div><div class="c" id="bc"></div></div>
+      <div class="margin" id="margin"></div>
+    </div>
+
+    <div class="card">
+      <h3>Probabilidad de victoria</h3>
+      <div class="prob-num" id="probNum">—</div>
+      <div class="prob-lab" id="probLab"></div>
+      <div class="hist" id="hist"></div>
+      <div class="hist-axis"><span>45% Abe</span><span>50%</span><span>60%+</span></div>
+    </div>
+  </div>
+
+
+
+  <div class="presets" id="presets">
+    <button data-p="base" class="on">Caso base</button>
+    <button data-p="derecha">Derecha unida</button>
+    <button data-p="referendo">Referendo anti-Tigre</button>
+    <button data-p="abstencion">Abstención alta</button>
+  </div>
+
+  <div class="sec-title">Reparto de los votos huérfanos</div>
+  <div class="controls" id="blocs"></div>
+
+  <div class="sec-title">Participación y bases de los finalistas</div>
+  <div class="controls">
+    <div class="bloc">
+      <div class="bloc-head"><div class="bloc-name">Retorno de la base de Abelardo<small>Qué tanto de sus 10.3M de primera vuelta vuelve a las urnas, o crece, el 21 de junio.</small></div></div>
+      <div class="ctrl"><div class="lab"><span>Retención</span><span class="val" id="retA-v">100%</span></div>
+      <input type="range" id="retA" min="80" max="115" step="1" value="100"></div>
+    </div>
+    <div class="bloc">
+      <div class="bloc-head"><div class="bloc-name">Retorno de la base de Cepeda<small>El petrismo con la maquinaria del Estado puede crecer, o desinflarse si cunde el desánimo.</small></div></div>
+      <div class="ctrl"><div class="lab"><span>Retención</span><span class="val" id="retC-v">100%</span></div>
+      <input type="range" id="retC" min="80" max="115" step="1" value="100"></div>
+    </div>
+  </div>
+
+  <div class="sec-title">Maquinaria y movilización</div>
+  <div class="bloc">
+    <div class="bloc-head"><div class="bloc-name">Factor maquinaria
+      <small>Efecto neto de clientelismo y movilización transaccional, concentrado en Costa Caribe y Pacífico. En la práctica rara vez mueve más de 2 a 4 puntos a nivel nacional, pero ahí se decide un margen estrecho.</small></div></div>
+    <div class="ctrl"><div class="lab"><span>Inclinación neta</span><span class="val" id="mval">0.0 pts</span></div>
+      <input type="range" class="split" id="machine" min="-5" max="5" step="0.5" value="0">
+      <div class="ends"><span class="l">◄ favorece a Cepeda</span><span class="r">favorece a Abelardo ►</span></div>
+    </div>
+  </div>
+
+  <div class="regions">
+    <div class="reg c"><h4>Fortines de Cepeda</h4><p>Pacífico (Chocó, Cauca, Nariño, Valle), Caribe de la Guajira a Sucre, y el sur profundo. Petrismo de convicción más palanca del Estado.</p></div>
+    <div class="reg a"><h4>Fortines de Abelardo</h4><p>Antioquia arrasada (Medellín 55%), Eje Cafetero, Santanderes e interior andino. Más Córdoba, su tierra natal, como voto de hijo de la región.</p></div>
+  </div>
+
+  <div class="note">El choque está en la Costa: el Estado petrista empuja por Cepeda, pero De La Espriella es cordobés y reclama afinidad regional sobre el mismo territorio. Por eso esos departamentos son los más elásticos en el mapa.</div>
+
+  <footer>
+    <b>Cómo funciona.</b> Parte de los resultados de primera vuelta, reparte los votos de cada eliminado entre los dos finalistas (según cuántos se quedan en casa y cómo se dividen los que votan), ajusta por el retorno de cada base y por la maquinaria, y convierte todo a votos sobre un censo de 41.4M. La probabilidad sale de 2.000 simulaciones que sacuden cada supuesto dentro de un rango razonable. El mapa toma una línea base modelada por departamento y la desplaza con el resultado nacional, con la Costa y el Pacífico más sensibles.<br><br>
+    <b>Advertencias.</b> Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas un poco, aunque rara vez cambia el orden. Participación récord, ~2.4M de votos más que en 2022. Las líneas base por departamento son estimaciones ilustrativas, no cifras oficiales. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación. Para conversar entre amigos: muevan los supuestos y discutan.
+  </footer>
+</div>
+<div class="toast" id="toast">Enlace copiado</div>
+
+<script>
+
+const CENSO = 41421973, ABE0 = 10310937, CEP0 = 9649081, FRV = 23585000;
+const BLOCS = [
+  {id:"paloma", name:"Paloma Valencia", desc:"Uribismo · Gran Consulta. Uribe y la propia Paloma ya endosaron a Abelardo.", pct:6.9},
+  {id:"fajardo", name:"Sergio Fajardo", desc:"Centro · el clásico voto ni-ni que se fractura.", pct:4.0},
+  {id:"lopez",   name:"Claudia López", desc:"Centroizquierda verde · choca con Petro.", pct:1.0},
+  {id:"otros",   name:"Barreras, Dávila, Botero, Luna, voto en blanco", desc:"Cola larga: derecha menor más izquierda anti-continuidad.", pct:3.5},
+];
+BLOCS.forEach(b=>b.pool = b.pct*FRV/100);
+const PRESETS = {
+  base:       {paloma:[18,80], fajardo:[40,40], lopez:[30,28], otros:[45,52], retA:104, retC:104, machine:0},
+  derecha:    {paloma:[8,90],  fajardo:[28,56], lopez:[24,36], otros:[34,66], retA:104, retC:98,  machine:1},
+  referendo:  {paloma:[30,70], fajardo:[28,30], lopez:[18,20], otros:[40,45], retA:99,  retC:108, machine:-3},
+  abstencion: {paloma:[36,80], fajardo:[56,42], lopez:[46,28], otros:[55,52], retA:92,  retC:90,  machine:0},
+};
+const state = {retA:100, retC:100, machine:0};
+BLOCS.forEach(b=>state[b.id]={abst:0,share:0});
+
+function modelFor(s){
+  let abe = ABE0*s.retA/100, cep = CEP0*s.retC/100;
+  BLOCS.forEach(b=>{
+    const st=s[b.id]; const voters=b.pool*(1-st.abst/100);
+    abe += voters*st.share/100; cep += voters*(1-st.share/100);
+  });
+  const total=abe+cep;
+  let pa=abe/total*100; pa=Math.max(0,Math.min(100,pa+s.machine)); const pc=100-pa;
+  return {pa,pc,abeV:total*pa/100,cepV:total*pc/100,total,turnout:total/CENSO*100};
+}
+function cloneState(){const c={retA:state.retA,retC:state.retC,machine:state.machine};BLOCS.forEach(b=>c[b.id]={abst:state[b.id].abst,share:state[b.id].share});return c;}
+const ANCHOR = modelFor(PRESETS.base.__resolved||resolve(PRESETS.base)).pa;
+function resolve(p){const c={retA:p.retA,retC:p.retC,machine:p.machine};BLOCS.forEach(b=>c[b.id]={abst:p[b.id][0],share:p[b.id][1]});return c;}
+
+function fmtM(v){return (v/1e6).toFixed(2)+"M";}
+function fmtK(v){return Math.round(v).toLocaleString('es-CO');}
+
+// ---- build bloc UI ----
+const blocsEl=document.getElementById("blocs");
+BLOCS.forEach(b=>{
+  const el=document.createElement("div"); el.className="bloc";
+  el.innerHTML=`<div class="bloc-head"><div class="bloc-name">${b.name}<small>${b.desc}</small></div>
+    <div class="pool">${b.pct.toFixed(1)}% · ${fmtM(b.pool)}</div></div>
+    <div class="ctrl"><div class="lab"><span>Se queda en casa</span><span class="val" id="${b.id}-av">0%</span></div>
+      <input type="range" id="${b.id}-abst" min="0" max="100" step="1" value="0"></div>
+    <div class="ctrl"><div class="lab"><span>De los que votan</span><span class="val" id="${b.id}-sv">0% Abe</span></div>
+      <input type="range" class="split" id="${b.id}-share" min="0" max="100" step="1" value="0">
+      <div class="ends"><span class="l">◄ Cepeda</span><span class="r">Abelardo ►</span></div></div>`;
+  blocsEl.appendChild(el);
+  el.querySelector(`#${b.id}-abst`).addEventListener("input",e=>{state[b.id].abst=+e.target.value;syncBloc(b.id);recompute();});
+  el.querySelector(`#${b.id}-share`).addEventListener("input",e=>{state[b.id].share=+e.target.value;syncBloc(b.id);recompute();});
+});
+function syncBloc(id){
+  document.getElementById(id+"-av").textContent=state[id].abst+"%";
+  const s=state[id].share;
+  document.getElementById(id+"-sv").textContent=s+"% Abe · "+(100-s)+"% Cep";
+}
+["retA","retC"].forEach(k=>{
+  document.getElementById(k).addEventListener("input",e=>{state[k]=+e.target.value;document.getElementById(k+"-v").textContent=state[k]+"%";recompute();});
+});
+document.getElementById("machine").addEventListener("input",e=>{state.machine=+e.target.value;document.getElementById("mval").textContent=(state.machine>0?"+":"")+state.machine.toFixed(1)+" pts";recompute();});
+
+// ---- probability (Monte Carlo) ----
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function randn(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function monteCarlo(N){
+  const bins=new Array(20).fill(0); let wins=0; const base=cloneState();
+  for(let i=0;i<N;i++){
+    const s={retA:clamp(base.retA+randn()*4,80,118),retC:clamp(base.retC+randn()*4,80,118),machine:clamp(base.machine+randn()*1.6,-6,6)};
+    BLOCS.forEach(b=>{s[b.id]={abst:clamp(base[b.id].abst+randn()*8,0,100),share:clamp(base[b.id].share+randn()*9,0,100)};});
+    const pa=modelFor(s).pa; if(pa>50)wins++;
+    let bi=Math.floor((pa-45)/ (15/20)); bi=clamp(bi,0,19); bins[bi]++;
+  }
+  return {p:wins/N*100,bins,N};
+}
+function paintProb(){
+  const r=monteCarlo(2000);
+  const pAbe=r.p, fav=pAbe>=50?"De La Espriella":"Cepeda", pv=pAbe>=50?pAbe:100-pAbe;
+  const col=pAbe>=50?"var(--abe)":"var(--cep)";
+  document.getElementById("probNum").textContent=pv.toFixed(0)+"%";
+  document.getElementById("probNum").style.color=col;
+  document.getElementById("probLab").innerHTML=`probabilidad de que gane <b style="color:${col}">${fav}</b><br><span style="font-family:'JetBrains Mono',monospace;font-size:11px">de ${r.N} simulaciones con supuestos sacudidos</span>`;
+  const mx=Math.max(...r.bins);
+  const hist=document.getElementById("hist"); hist.innerHTML="";
+  r.bins.forEach((c,i)=>{const share=45+i*(15/20);const d=document.createElement("div");d.className="bin";
+    d.style.height=(c/mx*100)+"%";d.style.background=share>=50?"var(--abe)":"var(--cep)";d.style.opacity=0.55+0.45*(c/mx);hist.appendChild(d);});
+}
+
+// ---- main recompute ----
+function recompute(){
+  const m=modelFor(cloneState());
+  document.getElementById("pa").textContent=m.pa.toFixed(1)+"%";
+  document.getElementById("pc").textContent=m.pc.toFixed(1)+"%";
+  document.getElementById("va").textContent="≈ "+fmtM(m.abeV)+" votos";
+  document.getElementById("vc").textContent="≈ "+fmtM(m.cepV)+" votos";
+  document.getElementById("ba").style.width=m.pa+"%";
+  document.getElementById("bc").style.width=m.pc+"%";
+  const lead=Math.abs(m.pa-m.pc), wn=m.pa>m.pc?"De La Espriella":"Cepeda", wc=m.pa>m.pc?"var(--abe)":"var(--cep)";
+  const tone=lead>8?"gana con holgura":lead>3?"se impone":lead>1?"gana raspando":"empate técnico";
+  const v=document.getElementById("verdict");
+  v.innerHTML = lead<=1 ? `Proyección: <span style="color:var(--cream)">empate técnico</span>.`
+    : `Proyección: <span style="color:${wc}">${wn}</span> ${tone}.`;
+  const vmar=Math.abs(m.abeV-m.cepV);
+  document.getElementById("margin").innerHTML=
+    `Margen <b>${lead.toFixed(1)} pts</b> · <b>${fmtK(vmar)}</b> votos<br>`+
+    `Total proyectado <b>${fmtM(m.total)}</b> · participación implícita <b>${m.turnout.toFixed(1)}%</b> del censo`;
+  paintProb();
+}
+
+// ---- presets ----
+function applyState(cfg){
+  BLOCS.forEach(b=>{state[b.id].abst=cfg[b.id][0];state[b.id].share=cfg[b.id][1];
+    document.getElementById(b.id+"-abst").value=cfg[b.id][0];
+    document.getElementById(b.id+"-share").value=cfg[b.id][1];syncBloc(b.id);});
+  state.retA=cfg.retA;state.retC=cfg.retC;state.machine=cfg.machine;
+  document.getElementById("retA").value=cfg.retA;document.getElementById("retA-v").textContent=cfg.retA+"%";
+  document.getElementById("retC").value=cfg.retC;document.getElementById("retC-v").textContent=cfg.retC+"%";
+  document.getElementById("machine").value=cfg.machine;document.getElementById("mval").textContent=(cfg.machine>0?"+":"")+cfg.machine.toFixed(1)+" pts";
+  recompute();
+}
+document.querySelectorAll("#presets button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("#presets button").forEach(b=>b.classList.remove("on"));
+    btn.classList.add("on"); applyState(PRESETS[btn.dataset.p]);
+  });
+});
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  document.querySelectorAll("#presets button").forEach(b=>b.classList.remove("on"));
+  document.querySelector('#presets button[data-p=base]').classList.add("on");
+  applyState(PRESETS.base);
+});
+
+// ---- share via URL ----
+function encodeState(){
+  const arr=[1];BLOCS.forEach(b=>arr.push(state[b.id].abst,state[b.id].share));
+  arr.push(state.retA,state.retC,Math.round(state.machine*10));
+  return arr.join(".");
+}
+function decodeState(str){
+  try{const a=str.split(".").map(Number);if(a[0]!==1)return null;let i=1;const cfg={};
+    BLOCS.forEach(b=>{cfg[b.id]=[a[i++],a[i++]];});cfg.retA=a[i++];cfg.retC=a[i++];cfg.machine=a[i++]/10;
+    return cfg;}catch(e){return null;}
+}
+document.getElementById("shareBtn").addEventListener("click",()=>{
+  const url=location.origin+location.pathname+"#s="+encodeState();
+  history.replaceState(null,"","#s="+encodeState());
+  const t=document.getElementById("toast");
+  const done=()=>{t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1600);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,done);}else{done();}
+});
+
+// ---- init ----
+(function init(){
+  const h=location.hash;
+  if(h.startsWith("#s=")){const cfg=decodeState(h.slice(3));
+    if(cfg){document.querySelectorAll("#presets button").forEach(b=>b.classList.remove("on"));applyState(cfg);return;}}
+  applyState(PRESETS.base);
+})();
+</script>
+</body>
+</html>
