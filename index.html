@@ -100,6 +100,8 @@
   input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;
     background:#0d0a06;outline:none;cursor:pointer;border:1px solid var(--line)}
   input[type=range].split{background:linear-gradient(90deg,var(--cep-soft),var(--abe-soft))}
+  input[type=range].blank{background:linear-gradient(90deg,#1a1610,#3a3020)}
+  .val.blk{color:#c8b090}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;
     background:var(--cream);border:3px solid #15110c;box-shadow:0 2px 6px rgba(0,0,0,.5)}
   input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--cream);border:3px solid #15110c}
@@ -112,6 +114,15 @@
   .note{background:var(--abe-soft);border:1px solid #5a4012;border-radius:10px;padding:12px 14px;font-size:12px;color:#e8d3a8;margin-top:14px}
   footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.7}
   footer b{color:var(--cream)}
+  .credits{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+  .credits-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+  .credits a{color:var(--abe);text-decoration:none}
+  .credits a:hover{text-decoration:underline}
+  .repo-link{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;
+    background:var(--panel);border:1px solid var(--line);padding:6px 12px;border-radius:999px;
+    color:var(--cream) !important;transition:.18s}
+  .repo-link:hover{border-color:var(--abe) !important}
+  .disc{font-size:11px;color:var(--muted);font-style:italic;opacity:.8}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
     background:var(--abe);color:#1a1206;font-weight:700;font-family:"JetBrains Mono",monospace;font-size:12px;
     padding:11px 18px;border-radius:999px;opacity:0;transition:.3s;pointer-events:none;z-index:50}
@@ -199,8 +210,15 @@
   <div class="note">El choque está en la Costa: el Estado petrista empuja por Cepeda, pero De La Espriella es cordobés y reclama afinidad regional sobre el mismo territorio. Por eso esos departamentos son los más elásticos en el mapa.</div>
 
   <footer>
-    <b>Cómo funciona.</b> Parte de los resultados de primera vuelta, reparte los votos de cada eliminado entre los dos finalistas (según cuántos se quedan en casa y cómo se dividen los que votan), ajusta por el retorno de cada base y por la maquinaria, y convierte todo a votos sobre un censo de 41.4M. La probabilidad sale de 2.000 simulaciones que sacuden cada supuesto dentro de un rango razonable. El mapa toma una línea base modelada por departamento y la desplaza con el resultado nacional, con la Costa y el Pacífico más sensibles.<br><br>
-    <b>Advertencias.</b> Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas un poco, aunque rara vez cambia el orden. Participación récord, ~2.4M de votos más que en 2022. Las líneas base por departamento son estimaciones ilustrativas, no cifras oficiales. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación. Para conversar entre amigos: muevan los supuestos y discutan.
+    <b>Cómo funciona.</b> Parte de los resultados de primera vuelta, reparte los votos de cada eliminado entre los dos finalistas (según cuántos se quedan en casa, cuántos votan en blanco y cómo se dividen los que sí votan por algún candidato), ajusta por el retorno de cada base y por la maquinaria, y convierte todo a votos sobre un censo de 41.4M. La probabilidad sale de 2.000 simulaciones que sacuden cada supuesto dentro de un rango razonable. Para conversar entre amigos: muevan los supuestos y discutan.<br><br>
+    <b>Advertencias.</b> Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas un poco, aunque rara vez cambia el orden. Participación récord, ~2.4M de votos más que en 2022. Las líneas base por departamento son estimaciones ilustrativas, no cifras oficiales. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación.<br><br>
+    <div class="credits">
+      <div class="credits-row">
+        <span>Construido por <a href="mailto:cavanegas@gmail.com">Carlos Vanegas</a> con ayuda de Claude Opus 4.8 (Anthropic).</span>
+        <a href="https://github.com/cvanegas/elecciones-colombia-2026" target="_blank" class="repo-link">⌥ Ver código en GitHub</a>
+      </div>
+      <div class="disc">No representa la posición de mi empleador ni de ninguna campaña política. Este modelo puede contener errores. Úsalo bajo tu propio criterio.</div>
+    </div>
   </footer>
 </div>
 <div class="toast" id="toast">Enlace copiado</div>
@@ -212,29 +230,33 @@ const BLOCS = [
   {id:"paloma", name:"Paloma Valencia", desc:"Uribismo · Gran Consulta. Uribe y la propia Paloma ya endosaron a Abelardo.", pct:6.9},
   {id:"fajardo", name:"Sergio Fajardo", desc:"Centro · el clásico voto ni-ni que se fractura.", pct:4.0},
   {id:"lopez",   name:"Claudia López", desc:"Centroizquierda verde · choca con Petro.", pct:1.0},
-  {id:"otros",   name:"Barreras, Dávila, Botero, Luna, voto en blanco", desc:"Cola larga: derecha menor más izquierda anti-continuidad.", pct:3.5},
+  {id:"otros",   name:"Barreras, Dávila, Botero, Luna y otros", desc:"Cola larga: derecha menor más izquierda anti-continuidad.", pct:3.5},
 ];
 BLOCS.forEach(b=>b.pool = b.pct*FRV/100);
 const PRESETS = {
-  base:       {paloma:[18,80], fajardo:[40,40], lopez:[30,28], otros:[45,52], retA:104, retC:104, machine:0},
-  derecha:    {paloma:[8,90],  fajardo:[28,56], lopez:[24,36], otros:[34,66], retA:104, retC:98,  machine:1},
-  referendo:  {paloma:[30,70], fajardo:[28,30], lopez:[18,20], otros:[40,45], retA:99,  retC:108, machine:-3},
-  abstencion: {paloma:[36,80], fajardo:[56,42], lopez:[46,28], otros:[55,52], retA:92,  retC:90,  machine:0},
+  base:       {paloma:[18,80,3],  fajardo:[40,40,18], lopez:[30,28,12], otros:[45,52,8],  retA:104, retC:104, machine:0},
+  derecha:    {paloma:[8,90,2],   fajardo:[28,56,10], lopez:[24,36,8],  otros:[34,66,6],  retA:104, retC:98,  machine:1},
+  referendo:  {paloma:[30,70,5],  fajardo:[28,30,25], lopez:[18,20,18], otros:[40,45,12], retA:99,  retC:108, machine:-3},
+  abstencion: {paloma:[36,80,4],  fajardo:[56,42,20], lopez:[46,28,14], otros:[55,52,9],  retA:92,  retC:90,  machine:0},
 };
 const state = {retA:100, retC:100, machine:0};
-BLOCS.forEach(b=>state[b.id]={abst:0,share:0});
+BLOCS.forEach(b=>state[b.id]={abst:0,share:0,blank:0});
 
 function modelFor(s){
-  let abe = ABE0*s.retA/100, cep = CEP0*s.retC/100;
+  let abe = ABE0*s.retA/100, cep = CEP0*s.retC/100, blancos=0;
   BLOCS.forEach(b=>{
-    const st=s[b.id]; const voters=b.pool*(1-st.abst/100);
-    abe += voters*st.share/100; cep += voters*(1-st.share/100);
+    const st=s[b.id];
+    const voters=b.pool*(1-st.abst/100);
+    const blk=voters*(st.blank||0)/100;
+    const active=voters-blk;
+    blancos+=blk;
+    abe += active*st.share/100; cep += active*(1-st.share/100);
   });
   const total=abe+cep;
   let pa=abe/total*100; pa=Math.max(0,Math.min(100,pa+s.machine)); const pc=100-pa;
-  return {pa,pc,abeV:total*pa/100,cepV:total*pc/100,total,turnout:total/CENSO*100};
+  return {pa,pc,abeV:total*pa/100,cepV:total*pc/100,total,blancos,turnout:(total+blancos)/CENSO*100};
 }
-function cloneState(){const c={retA:state.retA,retC:state.retC,machine:state.machine};BLOCS.forEach(b=>c[b.id]={abst:state[b.id].abst,share:state[b.id].share});return c;}
+function cloneState(){const c={retA:state.retA,retC:state.retC,machine:state.machine};BLOCS.forEach(b=>c[b.id]={abst:state[b.id].abst,share:state[b.id].share,blank:state[b.id].blank});return c;}
 const ANCHOR = modelFor(PRESETS.base.__resolved||resolve(PRESETS.base)).pa;
 function resolve(p){const c={retA:p.retA,retC:p.retC,machine:p.machine};BLOCS.forEach(b=>c[b.id]={abst:p[b.id][0],share:p[b.id][1]});return c;}
 
@@ -249,15 +271,19 @@ BLOCS.forEach(b=>{
     <div class="pool">${b.pct.toFixed(1)}% · ${fmtM(b.pool)}</div></div>
     <div class="ctrl"><div class="lab"><span>Se queda en casa</span><span class="val" id="${b.id}-av">0%</span></div>
       <input type="range" id="${b.id}-abst" min="0" max="100" step="1" value="0"></div>
-    <div class="ctrl"><div class="lab"><span>De los que votan</span><span class="val" id="${b.id}-sv">0% Abe</span></div>
+    <div class="ctrl"><div class="lab"><span>Vota en blanco</span><span class="val blk" id="${b.id}-bv">0%</span></div>
+      <input type="range" class="blank" id="${b.id}-blank" min="0" max="60" step="1" value="0"></div>
+    <div class="ctrl"><div class="lab"><span>De los que votan por alguno</span><span class="val" id="${b.id}-sv">0% Abe</span></div>
       <input type="range" class="split" id="${b.id}-share" min="0" max="100" step="1" value="0">
       <div class="ends"><span class="l">◄ Cepeda</span><span class="r">Abelardo ►</span></div></div>`;
   blocsEl.appendChild(el);
   el.querySelector(`#${b.id}-abst`).addEventListener("input",e=>{state[b.id].abst=+e.target.value;syncBloc(b.id);recompute();});
+  el.querySelector(`#${b.id}-blank`).addEventListener("input",e=>{state[b.id].blank=+e.target.value;syncBloc(b.id);recompute();});
   el.querySelector(`#${b.id}-share`).addEventListener("input",e=>{state[b.id].share=+e.target.value;syncBloc(b.id);recompute();});
 });
 function syncBloc(id){
   document.getElementById(id+"-av").textContent=state[id].abst+"%";
+  document.getElementById(id+"-bv").textContent=state[id].blank+"%";
   const s=state[id].share;
   document.getElementById(id+"-sv").textContent=s+"% Abe · "+(100-s)+"% Cep";
 }
@@ -273,7 +299,7 @@ function monteCarlo(N){
   const bins=new Array(20).fill(0); let wins=0; const base=cloneState();
   for(let i=0;i<N;i++){
     const s={retA:clamp(base.retA+randn()*4,80,118),retC:clamp(base.retC+randn()*4,80,118),machine:clamp(base.machine+randn()*1.6,-6,6)};
-    BLOCS.forEach(b=>{s[b.id]={abst:clamp(base[b.id].abst+randn()*8,0,100),share:clamp(base[b.id].share+randn()*9,0,100)};});
+    BLOCS.forEach(b=>{s[b.id]={abst:clamp(base[b.id].abst+randn()*8,0,100),share:clamp(base[b.id].share+randn()*9,0,100),blank:clamp((base[b.id].blank||0)+randn()*5,0,60)};});
     const pa=modelFor(s).pa; if(pa>50)wins++;
     let bi=Math.floor((pa-45)/ (15/20)); bi=clamp(bi,0,19); bins[bi]++;
   }
@@ -307,16 +333,20 @@ function recompute(){
   v.innerHTML = lead<=1 ? `Proyección: <span style="color:var(--cream)">empate técnico</span>.`
     : `Proyección: <span style="color:${wc}">${wn}</span> ${tone}.`;
   const vmar=Math.abs(m.abeV-m.cepV);
+  const blkPct=(m.blancos/(m.total+m.blancos)*100);
   document.getElementById("margin").innerHTML=
     `Margen <b>${lead.toFixed(1)} pts</b> · <b>${fmtK(vmar)}</b> votos<br>`+
-    `Total proyectado <b>${fmtM(m.total)}</b> · participación implícita <b>${m.turnout.toFixed(1)}%</b> del censo`;
+    `Voto en blanco <b>~${fmtM(m.blancos)}</b> (<b>${blkPct.toFixed(1)}%</b> de votos válidos)<br>`+
+    `Total proyectado <b>${fmtM(m.total+m.blancos)}</b> · participación implícita <b>${m.turnout.toFixed(1)}%</b> del censo`;
   paintProb();
 }
 
 // ---- presets ----
 function applyState(cfg){
-  BLOCS.forEach(b=>{state[b.id].abst=cfg[b.id][0];state[b.id].share=cfg[b.id][1];
+  BLOCS.forEach(b=>{
+    state[b.id].abst=cfg[b.id][0];state[b.id].share=cfg[b.id][1];state[b.id].blank=cfg[b.id][2]||0;
     document.getElementById(b.id+"-abst").value=cfg[b.id][0];
+    document.getElementById(b.id+"-blank").value=cfg[b.id][2]||0;
     document.getElementById(b.id+"-share").value=cfg[b.id][1];syncBloc(b.id);});
   state.retA=cfg.retA;state.retC=cfg.retC;state.machine=cfg.machine;
   document.getElementById("retA").value=cfg.retA;document.getElementById("retA-v").textContent=cfg.retA+"%";
@@ -338,13 +368,13 @@ document.getElementById("resetBtn").addEventListener("click",()=>{
 
 // ---- share via URL ----
 function encodeState(){
-  const arr=[1];BLOCS.forEach(b=>arr.push(state[b.id].abst,state[b.id].share));
+  const arr=[2];BLOCS.forEach(b=>arr.push(state[b.id].abst,state[b.id].share,state[b.id].blank||0));
   arr.push(state.retA,state.retC,Math.round(state.machine*10));
   return arr.join(".");
 }
 function decodeState(str){
-  try{const a=str.split(".").map(Number);if(a[0]!==1)return null;let i=1;const cfg={};
-    BLOCS.forEach(b=>{cfg[b.id]=[a[i++],a[i++]];});cfg.retA=a[i++];cfg.retC=a[i++];cfg.machine=a[i++]/10;
+  try{const a=str.split(".").map(Number);if(a[0]!==2)return null;let i=1;const cfg={};
+    BLOCS.forEach(b=>{cfg[b.id]=[a[i++],a[i++],a[i++]];});cfg.retA=a[i++];cfg.retC=a[i++];cfg.machine=a[i++]/10;
     return cfg;}catch(e){return null;}
 }
 document.getElementById("shareBtn").addEventListener("click",()=>{
