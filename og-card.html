@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,900&family=Libre+Franklin:wght@400;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    width:1200px;height:630px;overflow:hidden;
+    background:#F5F3EF;
+    font-family:"Libre Franklin",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .flag{height:10px;background:linear-gradient(90deg,#FCD116 50%,#003893 50% 75%,#CE1126 75%)}
+  .card{
+    padding:56px 72px 48px;
+    height:620px;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .top{}
+  .kicker{
+    font-family:"Libre Franklin",system-ui,sans-serif;
+    font-size:15px;letter-spacing:.22em;text-transform:uppercase;
+    color:#88887A;display:flex;align-items:center;gap:10px;margin-bottom:18px;
+  }
+  .kicker::before{content:"";width:28px;height:2px;background:#003893}
+  h1{
+    font-family:"Fraunces",Georgia,serif;font-weight:900;
+    font-size:96px;line-height:.95;letter-spacing:-.03em;color:#111;
+    margin-bottom:24px;
+  }
+  h1 em{font-style:italic;color:#CE1126}
+  .tagline{
+    font-size:22px;color:#555;line-height:1.4;max-width:700px;
+  }
+  .bottom{display:flex;align-items:flex-end;justify-content:space-between}
+  .scores{display:flex;gap:48px}
+  .score{}
+  .score-name{font-size:14px;color:#88887A;letter-spacing:.04em;margin-bottom:4px}
+  .score-pct{
+    font-family:"Fraunces",Georgia,serif;font-weight:900;
+    font-size:62px;line-height:1;
+  }
+  .score-pct.abe{color:#003893}
+  .score-pct.cep{color:#CE1126}
+  .score-sub{font-size:13px;color:#aaa;margin-top:4px}
+  .vs{
+    font-family:"Fraunces",Georgia,serif;font-size:28px;
+    color:#ccc;align-self:center;padding-bottom:14px;
+  }
+  .url{
+    font-size:14px;color:#aaa;
+    font-family:"Courier New",monospace;letter-spacing:.02em;
+    text-align:right;padding-bottom:8px;
+  }
+  .bar-wrap{margin-top:20px;max-width:680px}
+  .bar{height:10px;border-radius:5px;overflow:hidden;display:flex;background:#E0DDD6}
+  .bar .a{width:52.4%;background:linear-gradient(90deg,#002070,#003893)}
+  .bar .c{width:46.6%;background:linear-gradient(90deg,#CE1126,#a00d1e)}
+</style>
+</head>
+<body>
+<div class="flag"></div>
+<div class="card">
+  <div class="top">
+    <div class="kicker">Colombia · Segunda vuelta · 21 jun 2026</div>
+    <h1>Dos <em>Colombias</em></h1>
+    <p class="tagline">Modelo interactivo de la segunda vuelta.<br>Mueve los supuestos y mira a dónde van los votos libres.</p>
+    <div class="bar-wrap">
+      <div class="bar"><div class="a"></div><div class="c"></div></div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="scores">
+      <div class="score">
+        <div class="score-name">De La Espriella</div>
+        <div class="score-pct abe">52.4%</div>
+        <div class="score-sub">caso base</div>
+      </div>
+      <div class="vs">vs</div>
+      <div class="score">
+        <div class="score-name">Cepeda</div>
+        <div class="score-pct cep">46.6%</div>
+        <div class="score-sub">caso base</div>
+      </div>
+    </div>
+    <div class="url">cvanegas.github.io/elecciones-colombia-2026</div>
+  </div>
+</div>
+</body>
+</html>
