@@ -53,8 +53,12 @@
   .byline{font-size:12px;color:var(--muted);margin-bottom:12px}
   .byline a{color:var(--abe);text-decoration:none}
   .byline a:hover{text-decoration:underline}
+  .tagline{color:#333;font-size:16px;line-height:1.5;max-width:56ch;margin-bottom:8px}
   .sub{color:var(--muted);max-width:62ch;font-size:14.5px}
   .sub b{color:var(--cream);font-weight:600}
+  .footnote{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);
+    margin-top:6px;line-height:1.6;max-width:72ch}
+  .footnote a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
   .stamp{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.04em;
     color:var(--cep);margin-top:10px;display:inline-block;
     border:1px solid #f0c0c0;background:#fff8f8;padding:5px 10px;border-radius:7px}
@@ -270,8 +274,8 @@
     <div class="kicker">Colombia · Segunda vuelta · 21 de junio de 2026</div>
     <h1>Dos <em>Colombias</em></h1>
     <p class="byline">por <a href="https://www.linkedin.com/in/cvanegas/" target="_blank">Carlos Vanegas</a> · con Claude Opus 4.8 (Anthropic) · <a href="https://github.com/cvanegas/elecciones-colombia-2026" target="_blank">ver código</a></p>
-    <p class="sub">Modelo interactivo de la segunda vuelta. Mueve los supuestos y mira a dónde van los votos libres. Punto de partida (preconteo casi final): <b>De La Espriella 43.7%</b> vs <b>Cepeda 40.9%</b> · participación récord de <b>~24M</b> sobre un censo de <b>41.4M</b>. El caso base refleja las encuestas de segunda vuelta de CNC y Guarumo (mayo 2026) y el análisis de trasvase de votos publicado por Infobae el 1 de junio.</p>
-    <div class="stamp" id="stamp">Datos al 1 jun 2026 · preconteo ≈99.8% de mesas · resultados preliminares y en disputa</div>
+    <p class="tagline">Modelo interactivo de la segunda vuelta.<br>Mueve los supuestos y mira a dónde van los votos libres.</p>
+    <p class="footnote">Punto de partida: <b style="color:#555">De La Espriella 43.7%</b> vs <b style="color:#555">Cepeda 40.9%</b> · ~24M votos · censo 41.4M · preconteo ≈99.8% · <a href="https://cambiocolombia.com/poder/articulo/2026/5/ultima-encuesta-antes-primera-vuelta-cepeda-espriella-cabeza-cabeza-paloma" target="_blank">CNC</a> / <a href="https://www.eltiempo.com/politica/elecciones-colombia-2026/encuesta-guarumo-y-ecoanalitica-cepeda-37-1-de-la-espriella-27-5-y-paloma-valencia-21-7-en-segunda-abelardo-aparece-por-encima-de-cepeda-3557410" target="_blank">Guarumo</a> may. 2026 · <span style="color:var(--cep)">resultados preliminares y en disputa</span></p>
     <div class="actions">
       <button class="btn share" id="shareBtn">⬡ Copiar enlace para compartir</button>
       <button class="btn" id="resetBtn">↺ Volver al caso base</button>
