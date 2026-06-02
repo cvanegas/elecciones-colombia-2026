@@ -593,6 +593,16 @@ new IntersectionObserver(entries=>{
 
 // ---- init ----
 (function init(){
+  // How-to banner: hide if previously dismissed
+  if(localStorage.getItem("howToDismissed")==="1"){
+    const ht=document.getElementById("howTo");
+    if(ht) ht.style.display="none";
+  }
+  document.getElementById("howToDismiss").addEventListener("click",()=>{
+    localStorage.setItem("howToDismissed","1");
+    document.getElementById("howTo").style.display="none";
+  });
+  // URL state restore
   const h=location.hash;
   if(h.startsWith("#s=")){const cfg=decodeState(h.slice(3));
     if(cfg){document.querySelectorAll("#presets button").forEach(b=>b.classList.remove("on"));applyState(cfg);return;}}
