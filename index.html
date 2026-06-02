@@ -227,6 +227,31 @@
 .stat-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
 .stat-card h3{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 
+/* methodology modal */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .22s}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);transform:translateY(16px);transition:transform .22s}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-stripe{height:5px;background:linear-gradient(90deg,var(--gold) 50%,var(--abe) 50% 75%,var(--cep) 75%);border-radius:20px 20px 0 0}
+.modal-body{padding:28px 28px 32px}
+.modal-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.modal-title{font-family:"Fraunces",serif;font-weight:900;font-size:24px;color:#111;line-height:1.1}
+.modal-title em{font-style:italic;color:var(--cep)}
+.modal-close{background:none;border:none;font-size:22px;color:var(--muted);cursor:pointer;line-height:1;padding:2px;flex-shrink:0}
+.modal-close:hover{color:#111}
+.modal-section{margin-bottom:20px}
+.modal-section h3{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.modal-section p,.modal-section li{font-size:13px;color:#444;line-height:1.7}
+.modal-section ul{padding-left:16px;display:flex;flex-direction:column;gap:4px}
+.modal-section a{color:var(--abe);text-decoration:none}
+.modal-section a:hover{text-decoration:underline}
+.modal-divider{border:none;border-top:1px solid var(--line);margin:18px 0}
+.modal-scenario{background:var(--bg);border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:13px;color:#444;line-height:1.6}
+.modal-scenario b{color:#111}
+.modal-contact{background:var(--abe-soft);border:1px solid #c8d4f8;border-radius:12px;padding:16px;font-size:13px;color:#333;line-height:1.7}
+.modal-contact a{color:var(--abe);font-weight:600;text-decoration:none}
+.modal-contact a:hover{text-decoration:underline}
+
 /* advanced accordion */
 .advanced-section{margin-top:10px;border-top:1px solid var(--line);padding-top:6px}
 .advanced-toggle{text-align:center;font-size:12px;color:var(--muted);cursor:pointer;padding:8px;background:none;border:none;width:100%;font-family:inherit}
@@ -273,7 +298,7 @@
   <header>
     <div class="kicker">Colombia · Segunda vuelta · 21 de junio de 2026</div>
     <h1>Dos <em>Colombias</em></h1>
-    <p class="byline">por <a href="https://www.linkedin.com/in/cvanegas/" target="_blank">Carlos Vanegas</a> · con Claude Opus 4.8 (Anthropic) · <a href="https://github.com/cvanegas/elecciones-colombia-2026" target="_blank">ver código</a></p>
+    <p class="byline">por <a href="https://www.linkedin.com/in/cvanegas/" target="_blank">Carlos Vanegas</a> · con Claude Opus 4.8 (Anthropic) · <a href="https://github.com/cvanegas/elecciones-colombia-2026" target="_blank">ver código</a> · <a href="#" id="openModal">metodología</a></p>
     <p class="tagline">Modelo interactivo de la segunda vuelta.<br>Mueve los supuestos y mira a dónde van los votos libres.</p>
     <p class="footnote">Punto de partida: <b style="color:#555">De La Espriella 43.7%</b> vs <b style="color:#555">Cepeda 40.9%</b> · ~24M votos · censo 41.4M · preconteo ≈99.8% · <a href="https://cambiocolombia.com/poder/articulo/2026/5/ultima-encuesta-antes-primera-vuelta-cepeda-espriella-cabeza-cabeza-paloma" target="_blank">CNC</a> / <a href="https://www.eltiempo.com/politica/elecciones-colombia-2026/encuesta-guarumo-y-ecoanalitica-cepeda-37-1-de-la-espriella-27-5-y-paloma-valencia-21-7-en-segunda-abelardo-aparece-por-encima-de-cepeda-3557410" target="_blank">Guarumo</a> may. 2026 · <span style="color:var(--cep)">resultados preliminares y en disputa</span></p>
     <div class="actions">
@@ -432,8 +457,82 @@
 
     <span class="disc">No representa la posición de mi empleador ni de ninguna campaña política. Este modelo puede contener errores. Úsalo bajo tu propio criterio.</span>
   </footer>
+  <div class="flag-footer"></div>
 </div>
-<div class="flag-footer"></div>
+
+<!-- Methodology modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+    <div class="modal-stripe"></div>
+    <div class="modal-body">
+      <div class="modal-top">
+        <div class="modal-title" id="modalHeading">Dos <em>Colombias</em><br><span style="font-size:15px;font-weight:400;font-family:'Libre Franklin',sans-serif;color:var(--muted)">Metodología y fuentes</span></div>
+        <button class="modal-close" id="closeModal" aria-label="Cerrar">✕</button>
+      </div>
+
+      <div class="modal-section">
+        <h3>¿Qué es esto?</h3>
+        <p>La primera calculadora electoral interactiva para la segunda vuelta presidencial de Colombia 2026. El modelo permite mover los supuestos — cómo se reparten los votos de Paloma Valencia, Fajardo, Claudia López y los demás — y ver en tiempo real cómo cambia el resultado y la probabilidad de victoria. Los escenarios están basados en lo que analistas y medios colombianos están discutiendo en este momento.</p>
+      </div>
+
+      <hr class="modal-divider">
+
+      <div class="modal-section">
+        <h3>Cómo funciona el modelo</h3>
+        <p>Punto de partida: resultados de primera vuelta del 31 de mayo de 2026 (preconteo ≈99.8% de mesas). Para cada candidato eliminado, el modelo estima tres variables:</p>
+        <ul style="margin-top:8px">
+          <li><b>Abstención</b> — qué porcentaje de sus votantes no va a las urnas el 21 de junio.</li>
+          <li><b>Voto en blanco</b> — de quienes sí votan, cuántos marcan en blanco.</li>
+          <li><b>Reparto</b> — de los que votan por un candidato, cómo se dividen entre De La Espriella y Cepeda.</li>
+        </ul>
+        <p style="margin-top:8px">A esto se suma el retorno de la base de cada finalista (pueden crecer o menguar respecto a primera vuelta) y un factor de maquinaria que modela el efecto neto del clientelismo en la Costa Caribe y el Pacífico.</p>
+        <p style="margin-top:8px">La <b>probabilidad de victoria</b> sale de 2.000 simulaciones Monte Carlo que sacuden cada supuesto dentro de un rango razonable usando distribuciones normales.</p>
+      </div>
+
+      <hr class="modal-divider">
+
+      <div class="modal-section">
+        <h3>Datos del caso base</h3>
+        <p>Los supuestos de partida se calibraron con:</p>
+        <ul style="margin-top:8px">
+          <li><a href="https://cambiocolombia.com/poder/articulo/2026/5/ultima-encuesta-antes-primera-vuelta-cepeda-espriella-cabeza-cabeza-paloma" target="_blank">Encuesta CNC (may. 16–22)</a> — Espriella 43.6% vs Cepeda 40.9%</li>
+          <li><a href="https://www.eltiempo.com/politica/elecciones-colombia-2026/encuesta-guarumo-y-ecoanalitica-cepeda-37-1-de-la-espriella-27-5-y-paloma-valencia-21-7-en-segunda-abelardo-aparece-por-encima-de-cepeda-3557410" target="_blank">Encuesta Guarumo/Ecoanalítica (may. 11–19)</a> — Espriella 43.6% vs Cepeda 40.0%</li>
+          <li><a href="https://www.infobae.com/colombia/2026/06/01/segunda-vuelta-como-se-repartirian-los-votos-de-paloma-valencia-y-sergio-fajardo-tras-derrota-en-la-primera-vuelta-expertos-opinan/" target="_blank">Análisis de trasvase — Infobae (jun. 1)</a> — Manuel Camilo González y David Fernando Varela</li>
+        </ul>
+      </div>
+
+      <hr class="modal-divider">
+
+      <div class="modal-section">
+        <h3>Los cuatro escenarios</h3>
+        <div class="modal-scenario">
+          <b>Caso base</b> — Los supuestos más probables según encuestas y analistas. Abelardo gana por ~5-6 puntos.
+        </div>
+        <div class="modal-scenario">
+          <b>Abelardo consolida la Costa</b> — La maquinaria caribe se alinea con el candidato costeño; gana Cesar y San Andrés (casi empatados en primera vuelta). Fuente: <a href="https://www.elheraldo.co/politica/2026/06/01/segunda-vuelta-presidencial-en-colombia-el-caribe-sera-la-region-decisiva-entre-abelardo-y-cepeda/" target="_blank">El Heraldo</a>, <a href="https://www.lasillavacia.com/silla-nacional/colombia-va-a-una-segunda-vuelta-entre-dos-proyectos-excluyentes/" target="_blank">La Silla Vacía</a>.
+        </div>
+        <div class="modal-scenario">
+          <b>Gran Acuerdo Nacional</b> — Fajardo y/o López endosan a Cepeda; Benedetti desplegado en el Caribe. El único camino viable para Cepeda según analistas. Fuente: <a href="https://www.lasillavacia.com/en-vivo/campana-de-cepeda-ya-busca-cafes-con-el-centro-para-segunda-vuelta/" target="_blank">La Silla Vacía</a>, <a href="https://www.pulzo.com/elecciones-colombia-2026/armando-benedetti-seria-carta-tapada-ivan-cepeda-para-segunda-vuelta-PP5201009" target="_blank">Pulzo</a>.
+        </div>
+        <div class="modal-scenario">
+          <b>Fajardo al voto en blanco</b> — El escenario más probable para los votantes de Fajardo según González y Varela: alta abstención y blanco en el centro, beneficio indirecto para Abelardo. Fuente: <a href="https://www.infobae.com/colombia/2026/06/01/segunda-vuelta-como-se-repartirian-los-votos-de-paloma-valencia-y-sergio-fajardo-tras-derrota-en-la-primera-vuelta-expertos-opinan/" target="_blank">Infobae</a>.
+        </div>
+      </div>
+
+      <hr class="modal-divider">
+
+      <div class="modal-section">
+        <div class="modal-contact">
+          <b>¿Periodista o analista?</b> — Si quieres usar este modelo en tu cobertura, citar los datos o conversar sobre la metodología, escríbeme.<br>
+          <a href="https://www.linkedin.com/in/cvanegas/" target="_blank">LinkedIn · Carlos Vanegas</a> &nbsp;·&nbsp;
+          <a href="https://github.com/cvanegas/elecciones-colombia-2026" target="_blank">Código fuente en GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast">Enlace copiado</div>
 
 <script>
@@ -687,6 +786,17 @@ new IntersectionObserver(entries=>{
   if(h.startsWith("#s=")){const cfg=decodeState(h.slice(3));
     if(cfg){document.querySelectorAll("#presets button").forEach(b=>b.classList.remove("on"));applyState(cfg);return;}}
   applyState(PRESETS.base);
+})();
+
+// ---- methodology modal ----
+(function(){
+  const overlay=document.getElementById("modalOverlay");
+  function open(){overlay.classList.add("open");document.body.style.overflow="hidden";}
+  function close(){overlay.classList.remove("open");document.body.style.overflow="";}
+  document.getElementById("openModal").addEventListener("click",e=>{e.preventDefault();open();});
+  document.getElementById("closeModal").addEventListener("click",close);
+  overlay.addEventListener("click",e=>{if(e.target===overlay)close();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")close();});
 })();
 </script>
 </body>
