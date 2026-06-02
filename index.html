@@ -134,7 +134,12 @@
   .note{background:var(--abe-soft);border:1px solid #c8d4f8;border-radius:10px;padding:12px 14px;font-size:12px;color:#333;margin-top:14px}
   footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.7}
   footer b{color:var(--cream)}
-  .disc{font-size:11px;color:var(--muted);font-style:italic;opacity:.8;display:block;margin-top:10px}
+  .footer-section{margin-bottom:14px}
+  .footer-section p{margin-top:3px}
+  .footer-list{margin:5px 0 0 16px;display:flex;flex-direction:column;gap:3px}
+  footer a{color:var(--abe);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  .disc{font-size:11px;color:var(--muted);font-style:italic;opacity:.8;display:block;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
     background:var(--abe);color:#fff;font-weight:700;font-family:"JetBrains Mono",monospace;font-size:12px;
     padding:11px 18px;border-radius:999px;opacity:0;transition:.3s;pointer-events:none;z-index:50}
@@ -371,10 +376,36 @@
   </div>
 
   <footer>
-    <b>Cómo funciona.</b> Parte de los resultados de primera vuelta, reparte los votos de cada eliminado entre los dos finalistas (según cuántos se quedan en casa, cuántos votan en blanco y cómo se dividen los que sí votan por algún candidato), ajusta por el retorno de cada base y por la maquinaria, y convierte todo a votos sobre un censo de 41.4M. La probabilidad sale de 2.000 simulaciones que sacuden cada supuesto dentro de un rango razonable. Para conversar entre amigos: muevan los supuestos y discutan.<br><br>
-    <b>Caso base.</b> Los supuestos de partida se calibraron con las encuestas de segunda vuelta de CNC (may. 16–22) y Guarumo/Ecoanalítica (may. 11–19), que proyectaban Espriella ~43.6% vs Cepeda ~40.9%, y con el análisis de trasvase de votos publicado por Infobae el 1 de junio de 2026 (fuentes: Manuel Camilo González sobre votos de Paloma; David Fernando Varela sobre votos de Fajardo). Paloma: disciplina de partido favorece a Abelardo (85%), alta movilización (88% participación). Fajardo: fragmentación esperada, voto en blanco elevado (25%), baja adhesión a cualquiera de los dos (32% Abe). López: afinidad programática con la izquierda (20% Abe). Barreras y otros: Barreras endosó a Cepeda, por eso solo 40% va a Abe en este bloque.<br><br>
-    <b>Escenarios alternativos.</b> <i>Abelardo consolida la Costa</i>: maquinaria caribe se alinea con el candidato costeño, Paloma movilizada al máximo, Abelardo gana Cesar y San Andrés (casi empatados en primera vuelta). Fuente: El Heraldo, La Silla Vacía. <i>Gran Acuerdo Nacional</i>: Fajardo y/o López endosan a Cepeda vía el "Gran Acuerdo Nacional" que opera Juan Fernando Cristo; Benedetti desplegado en el Caribe. Fuente: La Silla Vacía (jun. 1–2), Pulzo. <i>Fajardo al voto en blanco</i>: Fajardo libera a sus votantes o convoca explícitamente el voto en blanco, como predicen los analistas Manuel Camilo González y David Fernando Varela; alta abstención y blanco en el centro. Fuente: Infobae (jun. 1).<br><br>
-    <b>Advertencias.</b> Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas un poco, aunque rara vez cambia el orden. Participación récord, ~2.4M de votos más que en 2022. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación.
+    <div class="footer-section">
+      <b>Cómo funciona.</b>
+      <p>Parte de los resultados de primera vuelta. Para cada candidato eliminado, el modelo estima cuántos de sus votantes se quedan en casa, cuántos votan en blanco y cómo se dividen los que sí votan entre los dos finalistas. Ajusta por el retorno de cada base y por el factor de maquinaria. La probabilidad sale de 2.000 simulaciones que sacuden cada supuesto dentro de un rango razonable.</p>
+    </div>
+
+    <div class="footer-section">
+      <b>Caso base.</b>
+      <p>Calibrado con encuestas de segunda vuelta de <a href="https://cambiocolombia.com/poder/articulo/2026/5/ultima-encuesta-antes-primera-vuelta-cepeda-espriella-cabeza-cabeza-paloma" target="_blank">CNC (may. 16–22)</a> y <a href="https://www.eltiempo.com/politica/elecciones-colombia-2026/encuesta-guarumo-y-ecoanalitica-cepeda-37-1-de-la-espriella-27-5-y-paloma-valencia-21-7-en-segunda-abelardo-aparece-por-encima-de-cepeda-3557410" target="_blank">Guarumo/Ecoanalítica (may. 11–19)</a>, y con el <a href="https://www.infobae.com/colombia/2026/06/01/segunda-vuelta-como-se-repartirian-los-votos-de-paloma-valencia-y-sergio-fajardo-tras-derrota-en-la-primera-vuelta-expertos-opinan/" target="_blank">análisis de trasvase de Infobae (jun. 1)</a> con Manuel Camilo González y David Fernando Varela.</p>
+      <ul class="footer-list">
+        <li><b>Paloma Valencia:</b> disciplina de partido → 85% a Abelardo, alta movilización (88% de sus votantes van a las urnas).</li>
+        <li><b>Sergio Fajardo:</b> fragmentación esperada → voto en blanco elevado (25%), sólo 32% a Abelardo.</li>
+        <li><b>Claudia López:</b> afinidad programática con la izquierda → 20% a Abelardo.</li>
+        <li><b>Barreras y otros:</b> Barreras endosó explícitamente a Cepeda → 40% a Abelardo en este bloque.</li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <b>Escenarios alternativos.</b>
+      <ul class="footer-list">
+        <li><i>Abelardo consolida la Costa:</i> maquinaria caribe con el candidato costeño; Abelardo gana Cesar y San Andrés (empatados en primera vuelta). Fuentes: <a href="https://www.elheraldo.co/politica/2026/06/01/segunda-vuelta-presidencial-en-colombia-el-caribe-sera-la-region-decisiva-entre-abelardo-y-cepeda/" target="_blank">El Heraldo</a>, <a href="https://www.lasillavacia.com/silla-nacional/colombia-va-a-una-segunda-vuelta-entre-dos-proyectos-excluyentes/" target="_blank">La Silla Vacía</a>.</li>
+        <li><i>Gran Acuerdo Nacional:</i> Fajardo y/o López endosan a Cepeda; Benedetti desplegado en el Caribe. Fuentes: <a href="https://www.lasillavacia.com/en-vivo/campana-de-cepeda-ya-busca-cafes-con-el-centro-para-segunda-vuelta/" target="_blank">La Silla Vacía (jun. 1–2)</a>, <a href="https://www.pulzo.com/elecciones-colombia-2026/armando-benedetti-seria-carta-tapada-ivan-cepeda-para-segunda-vuelta-PP5201009" target="_blank">Pulzo</a>.</li>
+        <li><i>Fajardo al voto en blanco:</i> Fajardo convoca explícitamente el blanco; alta abstención y blanco en el centro. Fuente: <a href="https://www.infobae.com/colombia/2026/06/01/segunda-vuelta-como-se-repartirian-los-votos-de-paloma-valencia-y-sergio-fajardo-tras-derrota-en-la-primera-vuelta-expertos-opinan/" target="_blank">Infobae (jun. 1)</a>.</li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <b>Advertencias.</b>
+      <p>Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas. Participación récord, ~2.4M de votos más que en 2022. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación.</p>
+    </div>
+
     <span class="disc">No representa la posición de mi empleador ni de ninguna campaña política. Este modelo puede contener errores. Úsalo bajo tu propio criterio.</span>
   </footer>
 </div>
