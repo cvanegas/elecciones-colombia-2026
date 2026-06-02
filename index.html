@@ -159,19 +159,27 @@
     pointer-events:none;
   }
   .sticky-bar.visible{transform:translateY(0);pointer-events:auto}
-  .sb-cand{display:flex;flex-direction:column;flex-shrink:0}
-  .sb-abe{align-items:flex-start} .sb-cep{align-items:flex-end}
+  .sb-cand{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .sb-cand-info{display:flex;flex-direction:column}
+  .sb-abe .sb-cand-info{align-items:flex-start}
+  .sb-cep .sb-cand-info{align-items:flex-end}
+  .sb-photo{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--panel);flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+  .sb-abe .sb-photo{border-color:var(--abe)} .sb-cep .sb-photo{border-color:var(--cep)}
   .sb-name{font-size:10px;color:var(--muted);letter-spacing:.04em}
   .sb-pct{font-family:"Fraunces",serif;font-weight:900;font-size:22px;line-height:1.1}
   .sb-abe .sb-pct{color:var(--abe)} .sb-cep .sb-pct{color:var(--cep)}
-  .sb-center{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
-  .sb-mini-bar{height:8px;border-radius:4px;overflow:hidden;display:flex;background:var(--line)}
+  .sb-center{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+  .sb-mini-bar{height:7px;border-radius:4px;overflow:hidden;display:flex;background:var(--line)}
   .sb-mini-a{background:var(--abe);transition:width .5s cubic-bezier(.4,0,.1,1)}
   .sb-mini-c{background:var(--cep);transition:width .5s cubic-bezier(.4,0,.1,1)}
   .sb-verdict{font-size:10px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .sb-prob{font-size:11px;color:var(--muted);text-align:right;flex-shrink:0;white-space:nowrap}
+  .sb-prob-row{display:flex;align-items:center;gap:7px}
+  .sb-prob-gauge{flex:1;height:5px;border-radius:3px;overflow:hidden;display:flex;background:var(--line)}
+  .sb-prob-gauge-a{background:var(--abe);transition:width .5s cubic-bezier(.4,0,.1,1)}
+  .sb-prob-gauge-c{background:var(--cep);transition:width .5s cubic-bezier(.4,0,.1,1)}
+  .sb-prob{font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0}
   .sb-prob b{font-weight:700}
-  @media(max-width:560px){.sb-prob{display:none}}
+  @media(max-width:560px){.sb-photo{display:none}}
 
   /* accordion */
   .bloc-head.toggle{cursor:pointer;user-select:none}
@@ -228,8 +236,11 @@
 <div class="flag-stripe"></div>
 <div class="sticky-bar" id="stickyBar">
   <div class="sb-cand sb-abe">
-    <div class="sb-name">Abelardo</div>
-    <div class="sb-pct" id="sb-pa">—</div>
+    <img class="sb-photo" src="https://upload.wikimedia.org/wikipedia/commons/6/69/Abelardo_de_la_Espriella_2025.jpg" alt="Abelardo" onerror="this.style.display='none'">
+    <div class="sb-cand-info">
+      <div class="sb-name">Abelardo</div>
+      <div class="sb-pct" id="sb-pa">—</div>
+    </div>
   </div>
   <div class="sb-center">
     <div class="sb-mini-bar">
@@ -237,12 +248,21 @@
       <div class="sb-mini-c" id="sb-bc"></div>
     </div>
     <div class="sb-verdict" id="sb-verdict">—</div>
+    <div class="sb-prob-row">
+      <div class="sb-prob-gauge">
+        <div class="sb-prob-gauge-a" id="sb-prob-a"></div>
+        <div class="sb-prob-gauge-c" id="sb-prob-c"></div>
+      </div>
+      <div class="sb-prob" id="sb-prob">—</div>
+    </div>
   </div>
   <div class="sb-cand sb-cep">
-    <div class="sb-name">Cepeda</div>
-    <div class="sb-pct" id="sb-pc">—</div>
+    <div class="sb-cand-info">
+      <div class="sb-name">Cepeda</div>
+      <div class="sb-pct" id="sb-pc">—</div>
+    </div>
+    <img class="sb-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Ivan_Cepeda.jpg/500px-Ivan_Cepeda.jpg" alt="Cepeda" onerror="this.style.display='none'">
   </div>
-  <div class="sb-prob" id="sb-prob">—</div>
 </div>
 
 <div class="wrap">
@@ -561,7 +581,9 @@ function paintProb(){
   r.bins.forEach((c,i)=>{const share=45+i*(15/20);const d=document.createElement("div");d.className="bin";
     d.style.height=(c/mx*100)+"%";d.style.background=share>=50?"var(--abe)":"var(--cep)";d.style.opacity=0.55+0.45*(c/mx);hist.appendChild(d);});
   const shortFav=pAbe>=50?"Abe":"Cep";
-  document.getElementById("sb-prob").innerHTML=`prob. <b style="color:${col}">${pv.toFixed(0)}% ${shortFav}</b>`;
+  document.getElementById("sb-prob-a").style.width=pAbe+"%";
+  document.getElementById("sb-prob-c").style.width=(100-pAbe)+"%";
+  document.getElementById("sb-prob").innerHTML=`<b style="color:${col}">${pv.toFixed(0)}%</b> prob. ${shortFav}`;
 }
 
 // ---- main recompute ----
