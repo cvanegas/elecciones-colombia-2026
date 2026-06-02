@@ -305,9 +305,9 @@
 
   <div class="presets" id="presets">
     <button data-p="base" class="on">Caso base</button>
-    <button data-p="derecha">Derecha unida</button>
-    <button data-p="voto_castigo">Voto de castigo</button>
-    <button data-p="abstencion">Abstención alta</button>
+    <button data-p="costa">Abelardo consolida la Costa</button>
+    <button data-p="gran_acuerdo">Gran Acuerdo Nacional</button>
+    <button data-p="voto_blanco">Fajardo al voto en blanco</button>
   </div>
 
   <div class="sec-title">¿A dónde van los votos libres?</div>
@@ -357,6 +357,7 @@
   <footer>
     <b>Cómo funciona.</b> Parte de los resultados de primera vuelta, reparte los votos de cada eliminado entre los dos finalistas (según cuántos se quedan en casa, cuántos votan en blanco y cómo se dividen los que sí votan por algún candidato), ajusta por el retorno de cada base y por la maquinaria, y convierte todo a votos sobre un censo de 41.4M. La probabilidad sale de 2.000 simulaciones que sacuden cada supuesto dentro de un rango razonable. Para conversar entre amigos: muevan los supuestos y discutan.<br><br>
     <b>Caso base.</b> Los supuestos de partida se calibraron con las encuestas de segunda vuelta de CNC (may. 16–22) y Guarumo/Ecoanalítica (may. 11–19), que proyectaban Espriella ~43.6% vs Cepeda ~40.9%, y con el análisis de trasvase de votos publicado por Infobae el 1 de junio de 2026 (fuentes: Manuel Camilo González sobre votos de Paloma; David Fernando Varela sobre votos de Fajardo). Paloma: disciplina de partido favorece a Abelardo (85%), alta movilización (88% participación). Fajardo: fragmentación esperada, voto en blanco elevado (25%), baja adhesión a cualquiera de los dos (32% Abe). López: afinidad programática con la izquierda (20% Abe). Barreras y otros: Barreras endosó a Cepeda, por eso solo 40% va a Abe en este bloque.<br><br>
+    <b>Escenarios alternativos.</b> <i>Abelardo consolida la Costa</i>: maquinaria caribe se alinea con el candidato costeño, Paloma movilizada al máximo, Abelardo gana Cesar y San Andrés (casi empatados en primera vuelta). Fuente: El Heraldo, La Silla Vacía. <i>Gran Acuerdo Nacional</i>: Fajardo y/o López endosan a Cepeda vía el "Gran Acuerdo Nacional" que opera Juan Fernando Cristo; Benedetti desplegado en el Caribe. Fuente: La Silla Vacía (jun. 1–2), Pulzo. <i>Fajardo al voto en blanco</i>: Fajardo libera a sus votantes o convoca explícitamente el voto en blanco, como predicen los analistas Manuel Camilo González y David Fernando Varela; alta abstención y blanco en el centro. Fuente: Infobae (jun. 1).<br><br>
     <b>Advertencias.</b> Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas un poco, aunque rara vez cambia el orden. Participación récord, ~2.4M de votos más que en 2022. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación.
     <span class="disc">No representa la posición de mi empleador ni de ninguna campaña política. Este modelo puede contener errores. Úsalo bajo tu propio criterio.</span>
   </footer>
@@ -375,10 +376,10 @@ const BLOCS = [
 ];
 BLOCS.forEach(b=>b.pool = b.pct*FRV/100);
 const PRESETS = {
-  base:       {paloma:[12,85,3],  fajardo:[45,32,25], lopez:[30,20,12], otros:[45,40,8],  retA:104, retC:104, machine:0},
-  derecha:    {paloma:[8,90,2],   fajardo:[28,56,10], lopez:[24,36,8],  otros:[34,66,6],  retA:104, retC:98,  machine:1},
-  voto_castigo:{paloma:[30,70,5],  fajardo:[28,30,25], lopez:[18,20,18], otros:[40,45,12], retA:99,  retC:108, machine:-3},
-  abstencion: {paloma:[36,80,4],  fajardo:[56,42,20], lopez:[46,28,14], otros:[55,52,9],  retA:92,  retC:90,  machine:0},
+  base:        {paloma:[12,85,3],  fajardo:[45,32,25], lopez:[30,20,12], otros:[45,40,8],  retA:104, retC:104, machine:0},
+  costa:       {paloma:[10,88,2],  fajardo:[42,38,22], lopez:[28,20,10], otros:[40,48,8],  retA:107, retC:102, machine:2},
+  gran_acuerdo:{paloma:[15,80,5],  fajardo:[35,22,15], lopez:[20,12,8],  otros:[38,30,8],  retA:103, retC:110, machine:-3},
+  voto_blanco: {paloma:[12,85,3],  fajardo:[52,22,45], lopez:[35,18,25], otros:[48,38,15], retA:105, retC:98,  machine:0},
 };
 const state = {retA:100, retC:100, machine:0};
 BLOCS.forEach(b=>state[b.id]={abst:0,share:0,blank:0});
