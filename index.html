@@ -229,7 +229,7 @@
     <div class="kicker">Colombia · Segunda vuelta · 21 de junio de 2026</div>
     <h1>Pulso <em>2026</em></h1>
     <p class="byline">por <a href="https://www.linkedin.com/in/cvanegas/" target="_blank">Carlos Vanegas</a> · con Claude Opus 4.8 (Anthropic) · <a href="https://github.com/cvanegas/elecciones-colombia-2026" target="_blank">ver código</a></p>
-    <p class="sub">Modelo interactivo de la segunda vuelta. Mueve los supuestos y mira a dónde van los votos, cuántos son, qué tan probable es cada desenlace y cómo se pinta el mapa. Punto de partida (preconteo casi final): <b>De La Espriella 43.7%</b> vs <b>Cepeda 40.9%</b> · participación récord de <b>~24M</b> sobre un censo de <b>41.4M</b>.</p>
+    <p class="sub">Modelo interactivo de la segunda vuelta. Mueve los supuestos y mira a dónde van los votos libres. Punto de partida (preconteo casi final): <b>De La Espriella 43.7%</b> vs <b>Cepeda 40.9%</b> · participación récord de <b>~24M</b> sobre un censo de <b>41.4M</b>. El caso base refleja las encuestas de segunda vuelta de CNC y Guarumo (mayo 2026) y el análisis de trasvase de votos publicado por Infobae el 1 de junio.</p>
     <div class="stamp" id="stamp">Datos al 1 jun 2026 · preconteo ≈99.8% de mesas · resultados preliminares y en disputa</div>
     <div class="actions">
       <button class="btn share" id="shareBtn">⬡ Copiar enlace para compartir</button>
@@ -356,7 +356,8 @@
 
   <footer>
     <b>Cómo funciona.</b> Parte de los resultados de primera vuelta, reparte los votos de cada eliminado entre los dos finalistas (según cuántos se quedan en casa, cuántos votan en blanco y cómo se dividen los que sí votan por algún candidato), ajusta por el retorno de cada base y por la maquinaria, y convierte todo a votos sobre un censo de 41.4M. La probabilidad sale de 2.000 simulaciones que sacuden cada supuesto dentro de un rango razonable. Para conversar entre amigos: muevan los supuestos y discutan.<br><br>
-    <b>Advertencias.</b> Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas un poco, aunque rara vez cambia el orden. Participación récord, ~2.4M de votos más que en 2022. Las líneas base por departamento son estimaciones ilustrativas, no cifras oficiales. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación.
+    <b>Caso base.</b> Los supuestos de partida se calibraron con las encuestas de segunda vuelta de CNC (may. 16–22) y Guarumo/Ecoanalítica (may. 11–19), que proyectaban Espriella ~43.6% vs Cepeda ~40.9%, y con el análisis de trasvase de votos publicado por Infobae el 1 de junio de 2026 (fuentes: Manuel Camilo González sobre votos de Paloma; David Fernando Varela sobre votos de Fajardo). Paloma: disciplina de partido favorece a Abelardo (85%), alta movilización (88% participación). Fajardo: fragmentación esperada, voto en blanco elevado (25%), baja adhesión a cualquiera de los dos (32% Abe). López: afinidad programática con la izquierda (20% Abe). Barreras y otros: Barreras endosó a Cepeda, por eso solo 40% va a Abe en este bloque.<br><br>
+    <b>Advertencias.</b> Preconteo casi final del 31 de mayo de 2026 (≈99.8% de mesas), todavía preliminar: Petro y Cepeda no reconocen las cifras y el escrutinio oficial puede moverlas un poco, aunque rara vez cambia el orden. Participación récord, ~2.4M de votos más que en 2022. Modelo determinístico con ruido, no una encuesta. El clientelismo se modela como fenómeno documentado de la política colombiana, no como recomendación.
     <span class="disc">No representa la posición de mi empleador ni de ninguna campaña política. Este modelo puede contener errores. Úsalo bajo tu propio criterio.</span>
   </footer>
 </div>
@@ -374,7 +375,7 @@ const BLOCS = [
 ];
 BLOCS.forEach(b=>b.pool = b.pct*FRV/100);
 const PRESETS = {
-  base:       {paloma:[18,80,3],  fajardo:[40,40,18], lopez:[30,28,12], otros:[45,52,8],  retA:104, retC:104, machine:0},
+  base:       {paloma:[12,85,3],  fajardo:[45,32,25], lopez:[30,20,12], otros:[45,40,8],  retA:104, retC:104, machine:0},
   derecha:    {paloma:[8,90,2],   fajardo:[28,56,10], lopez:[24,36,8],  otros:[34,66,6],  retA:104, retC:98,  machine:1},
   voto_castigo:{paloma:[30,70,5],  fajardo:[28,30,25], lopez:[18,20,18], otros:[40,45,12], retA:99,  retC:108, machine:-3},
   abstencion: {paloma:[36,80,4],  fajardo:[56,42,20], lopez:[46,28,14], otros:[55,52,9],  retA:92,  retC:90,  machine:0},
