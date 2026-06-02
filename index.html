@@ -145,22 +145,28 @@
   /* sticky bar */
   .sticky-bar{
     position:fixed;top:0;left:0;right:0;z-index:100;
-    background:rgba(245,243,239,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:rgba(245,243,239,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
-    padding:9px 20px;
-    display:flex;align-items:center;justify-content:space-between;gap:16px;
-    font-family:"JetBrains Mono",monospace;font-size:12px;
+    padding:8px 20px;
+    display:flex;align-items:center;gap:14px;
+    font-family:"JetBrains Mono",monospace;
     transform:translateY(-110%);transition:transform .28s cubic-bezier(.4,0,.2,1);
     pointer-events:none;
   }
   .sticky-bar.visible{transform:translateY(0);pointer-events:auto}
-  .sb-scores{display:flex;align-items:center;gap:12px}
-  .sb-a{color:var(--abe);font-weight:700}
-  .sb-c{color:var(--cep);font-weight:700}
-  .sb-vs{color:var(--line);font-size:11px}
-  .sb-prob{color:var(--muted);font-size:11px;text-align:right}
+  .sb-cand{display:flex;flex-direction:column;flex-shrink:0}
+  .sb-abe{align-items:flex-start} .sb-cep{align-items:flex-end}
+  .sb-name{font-size:10px;color:var(--muted);letter-spacing:.04em}
+  .sb-pct{font-family:"Fraunces",serif;font-weight:900;font-size:22px;line-height:1.1}
+  .sb-abe .sb-pct{color:var(--abe)} .sb-cep .sb-pct{color:var(--cep)}
+  .sb-center{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+  .sb-mini-bar{height:8px;border-radius:4px;overflow:hidden;display:flex;background:var(--line)}
+  .sb-mini-a{background:var(--abe);transition:width .5s cubic-bezier(.4,0,.1,1)}
+  .sb-mini-c{background:var(--cep);transition:width .5s cubic-bezier(.4,0,.1,1)}
+  .sb-verdict{font-size:10px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sb-prob{font-size:11px;color:var(--muted);text-align:right;flex-shrink:0;white-space:nowrap}
   .sb-prob b{font-weight:700}
-  @media(max-width:480px){.sb-prob{display:none}}
+  @media(max-width:560px){.sb-prob{display:none}}
 
   /* accordion */
   .bloc-head.toggle{cursor:pointer;user-select:none}
@@ -216,10 +222,20 @@
 
 <div class="flag-stripe"></div>
 <div class="sticky-bar" id="stickyBar">
-  <div class="sb-scores">
-    <span class="sb-a"><span id="sb-pa">—</span> Abelardo</span>
-    <span class="sb-vs">vs</span>
-    <span class="sb-c">Cepeda <span id="sb-pc">—</span></span>
+  <div class="sb-cand sb-abe">
+    <div class="sb-name">Abelardo</div>
+    <div class="sb-pct" id="sb-pa">—</div>
+  </div>
+  <div class="sb-center">
+    <div class="sb-mini-bar">
+      <div class="sb-mini-a" id="sb-ba"></div>
+      <div class="sb-mini-c" id="sb-bc"></div>
+    </div>
+    <div class="sb-verdict" id="sb-verdict">—</div>
+  </div>
+  <div class="sb-cand sb-cep">
+    <div class="sb-name">Cepeda</div>
+    <div class="sb-pct" id="sb-pc">—</div>
   </div>
   <div class="sb-prob" id="sb-prob">—</div>
 </div>
@@ -539,6 +555,11 @@ function recompute(){
     `Total proyectado <b>${fmtM(m.total+m.blancos)}</b> · participación implícita <b>${m.turnout.toFixed(1)}%</b> del censo`;
   document.getElementById("sb-pa").textContent=m.pa.toFixed(1)+"%";
   document.getElementById("sb-pc").textContent=m.pc.toFixed(1)+"%";
+  document.getElementById("sb-ba").style.width=m.pa+"%";
+  document.getElementById("sb-bc").style.width=m.pc+"%";
+  document.getElementById("sb-verdict").innerHTML=lead<=1
+    ?`empate técnico`
+    :`<span style="color:${wc}">${wn.split(" ").slice(-1)[0]}</span> ${tone}`;
   history.replaceState(null,"","#s="+encodeState());
   paintProb();
 }
