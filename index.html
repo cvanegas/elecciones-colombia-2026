@@ -152,7 +152,7 @@
     position:fixed;top:0;left:0;right:0;z-index:100;
     background:rgba(245,243,239,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
-    padding:8px 20px;
+    padding:10px 20px;
     display:flex;align-items:center;gap:14px;
     font-family:"JetBrains Mono",monospace;
     transform:translateY(-110%);transition:transform .28s cubic-bezier(.4,0,.2,1);
@@ -163,10 +163,10 @@
   .sb-cand-info{display:flex;flex-direction:column}
   .sb-abe .sb-cand-info{align-items:flex-start}
   .sb-cep .sb-cand-info{align-items:flex-end}
-  .sb-photo{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--panel);flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+  .sb-photo{width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--panel);flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.15)}
   .sb-abe .sb-photo{border-color:var(--abe)} .sb-cep .sb-photo{border-color:var(--cep)}
   .sb-name{font-size:10px;color:var(--muted);letter-spacing:.04em}
-  .sb-pct{font-family:"Fraunces",serif;font-weight:900;font-size:22px;line-height:1.1}
+  .sb-pct{font-family:"Fraunces",serif;font-weight:900;font-size:26px;line-height:1.1}
   .sb-abe .sb-pct{color:var(--abe)} .sb-cep .sb-pct{color:var(--cep)}
   .sb-center{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
   .sb-mini-bar{height:7px;border-radius:4px;overflow:hidden;display:flex;background:var(--line)}
@@ -294,7 +294,7 @@
 
   <div id="mainGrid">
   <!-- Candidate hero -->
-  <div class="hero">
+  <div class="hero" id="heroSection">
     <div class="candidate abe">
       <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Abelardo_de_la_Espriella_2025.jpg"
            alt="Abelardo de la Espriella" onerror="this.style.display='none'">
@@ -665,7 +665,7 @@ document.getElementById("shareBtn").addEventListener("click",()=>{
 const stickyBar=document.getElementById("stickyBar");
 new IntersectionObserver(entries=>{
   stickyBar.classList.toggle("visible",!entries[0].isIntersecting);
-},{threshold:0}).observe(document.getElementById("mainGrid"));
+},{threshold:0}).observe(document.getElementById("heroSection"));
 
 // ---- init ----
 (function init(){
