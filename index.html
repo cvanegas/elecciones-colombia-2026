@@ -6,15 +6,15 @@
 <title>Pulso 2026 · Modelo de Segunda Vuelta</title>
 
 <!-- social meta -->
-<meta name="description" content="Modelo interactivo de segunda vuelta presidencial Colombia 2026. De La Espriella 43.7% vs Cepeda 40.9% · mueve los supuestos y ve a dónde van los votos.">
+<meta name="description" content="Modelo interactivo de segunda vuelta presidencial Colombia 2026. De La Espriella 43.7% vs Cepeda 40.9% · mueve los supuestos y ve a dónde van los votos libres.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Pulso 2026 · Modelo de Segunda Vuelta Colombia">
-<meta property="og:description" content="Mueve los supuestos y mira a dónde van los votos. De La Espriella 43.7% vs Cepeda 40.9% en primera vuelta · balotaje 21 jun 2026.">
+<meta property="og:description" content="Mueve los supuestos y mira a dónde van los votos libres. De La Espriella 43.7% vs Cepeda 40.9% en primera vuelta · segunda vuelta 21 jun 2026.">
 <meta property="og:url" content="https://cvanegas.github.io/elecciones-colombia-2026/">
 <meta property="og:site_name" content="Pulso 2026">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pulso 2026 · Modelo de Segunda Vuelta Colombia">
-<meta name="twitter:description" content="Mueve los supuestos y mira a dónde van los votos. De La Espriella 43.7% vs Cepeda 40.9% · balotaje 21 jun 2026.">
+<meta name="twitter:description" content="Mueve los supuestos y mira a dónde van los votos libres. De La Espriella 43.7% vs Cepeda 40.9% · segunda vuelta 21 jun 2026.">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE0GFYX7KN"></script>
@@ -214,6 +214,7 @@
 </head>
 <body>
 
+<div class="flag-stripe"></div>
 <div class="sticky-bar" id="stickyBar">
   <div class="sb-scores">
     <span class="sb-a"><span id="sb-pa">—</span> Abelardo</span>
@@ -225,7 +226,7 @@
 
 <div class="wrap">
   <header>
-    <div class="kicker">Colombia · Balotaje 21 de junio 2026</div>
+    <div class="kicker">Colombia · Segunda vuelta · 21 de junio de 2026</div>
     <h1>Pulso <em>2026</em></h1>
     <p class="byline">por <a href="https://www.linkedin.com/in/cvanegas/" target="_blank">Carlos Vanegas</a> · con Claude Opus 4.8 (Anthropic) · <a href="https://github.com/cvanegas/elecciones-colombia-2026" target="_blank">ver código</a></p>
     <p class="sub">Modelo interactivo de la segunda vuelta. Mueve los supuestos y mira a dónde van los votos, cuántos son, qué tan probable es cada desenlace y cómo se pinta el mapa. Punto de partida (preconteo casi final): <b>De La Espriella 43.7%</b> vs <b>Cepeda 40.9%</b> · participación récord de <b>~24M</b> sobre un censo de <b>41.4M</b>.</p>
@@ -236,74 +237,122 @@
     </div>
   </header>
 
-  <div class="grid" id="mainGrid">
-    <div class="card">
-      <h3>Proyección nacional</h3>
-      <div class="verdict" id="verdict">—</div>
-      <div class="names">
-        <div class="nm-a">Abelardo de la Espriella<b id="pa">—</b><span class="v" id="va"></span></div>
-        <div class="nm-c">Iván Cepeda<b id="pc">—</b><span class="v" id="vc"></span></div>
-      </div>
-      <div class="fifty"><div class="tick"></div></div>
-      <div class="bar"><div class="a" id="ba"></div><div class="c" id="bc"></div></div>
-      <div class="margin" id="margin"></div>
-    </div>
+  <div class="how-to" id="howTo">
+  <div class="how-to-icon">🗳️</div>
+  <div>
+    <h4>¿Cómo usar este modelo?</h4>
+    <ol>
+      <li><b>Mira el resultado base</b> — así quedaría la segunda vuelta según los supuestos más probables.</li>
+      <li><b>Mueve las barras</b> en "¿A dónde van los votos libres?" para repartir los votos de Paloma, Fajardo, Claudia López y los demás entre los dos finalistas.</li>
+      <li><b>Prueba los escenarios</b> preestablecidos para ver casos extremos: derecha unida, voto de castigo, abstención alta.</li>
+      <li><b>Comparte</b> tu escenario favorito con el botón "Compartir este escenario".</li>
+    </ol>
+    <button class="how-to-dismiss" id="howToDismiss">Entendido, no volver a mostrar ✕</button>
+  </div>
+</div>
 
-    <div class="card">
+  <div id="mainGrid">
+  <!-- Candidate hero -->
+  <div class="hero">
+    <div class="candidate abe">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Abelardo_de_la_Espriella_2025.jpg/200px-Abelardo_de_la_Espriella_2025.jpg"
+           alt="Abelardo de la Espriella" onerror="this.style.display='none'">
+      <div class="candidate-info">
+        <div class="cand-name">Abelardo<br>de la Espriella</div>
+        <div class="cand-pct" id="pa">—</div>
+        <div class="cand-votes" id="va"></div>
+      </div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="candidate cep">
+      <div class="candidate-info" style="text-align:right">
+        <div class="cand-name">Iván<br>Cepeda</div>
+        <div class="cand-pct" id="pc">—</div>
+        <div class="cand-votes" id="vc"></div>
+      </div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Perfil_Iv%C3%A1n_Cepeda_%28cropped%29.jpg/200px-Perfil_Iv%C3%A1n_Cepeda_%28cropped%29.jpg"
+           alt="Iván Cepeda" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <!-- Vote bar -->
+  <div class="fifty"><div class="tick"></div></div>
+  <div class="bar"><div class="a" id="ba"></div><div class="c" id="bc"></div></div>
+  <div class="bar-labels"><span>← más Cepeda</span><span>50%</span><span>más Abelardo →</span></div>
+  <div class="verdict" id="verdict" style="margin-top:10px;text-align:center;font-family:'Fraunces',serif;font-style:italic;font-size:clamp(15px,2.5vw,19px);color:#444">—</div>
+
+  <!-- Stat cards -->
+  <div class="grid" style="margin-top:16px">
+    <div class="stat-card">
       <h3>Probabilidad de victoria</h3>
       <div class="prob-num" id="probNum">—</div>
       <div class="prob-lab" id="probLab"></div>
       <div class="hist" id="hist"></div>
       <div class="hist-axis">
-  <span style="left:0">45%</span>
-  <span style="left:16.7%;transform:translateX(-50%)">47.5%</span>
-  <span style="left:33.3%;transform:translateX(-50%)">50%</span>
-  <span style="left:66.7%;transform:translateX(-50%)">55%</span>
-  <span style="right:0">60%+</span>
-</div>
+        <span style="left:0">45%</span>
+        <span style="left:16.7%;transform:translateX(-50%)">47.5%</span>
+        <span style="left:33.3%;transform:translateX(-50%)">50%</span>
+        <span style="left:66.7%;transform:translateX(-50%)">55%</span>
+        <span style="right:0">60%+</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <h3>Margen y participación</h3>
+      <div class="margin" id="margin" style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);line-height:1.8"></div>
     </div>
   </div>
+</div>
 
   <div class="presets" id="presets">
     <button data-p="base" class="on">Caso base</button>
     <button data-p="derecha">Derecha unida</button>
-    <button data-p="referendo">Referendo anti-Tigre</button>
+    <button data-p="voto_castigo">Voto de castigo</button>
     <button data-p="abstencion">Abstención alta</button>
   </div>
 
-  <div class="sec-title">Reparto de los votos huérfanos</div>
+  <div class="sec-title">¿A dónde van los votos libres?</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px;max-width:66ch">Los candidatos que no pasaron sumaron <b style="color:var(--cream)">9.6M votos (15.4%)</b>. ¿A dónde irán el 21 de junio? Arrastra las barras.</p>
   <div class="controls" id="blocs"></div>
 
-  <div class="sec-title">Participación y bases de los finalistas</div>
-  <div class="controls">
+  <div style="margin-top:18px">
+    <button class="advanced-toggle" id="globalAdv-btn" onclick="toggleGlobalAdv()" style="font-size:13px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);width:100%">
+      ＋ Ajustes detallados: abstención por candidato, retención de bases, maquinaria ▾
+    </button>
+    <div class="advanced-body" id="globalAdv">
+
+    <div class="sec-title">Participación y bases de los finalistas</div>
+    <div class="controls">
+      <div class="bloc">
+        <div class="bloc-head"><div class="bloc-name">Retorno de la base de Abelardo<small>Qué tanto de sus 10.3M de primera vuelta vuelve a las urnas, o crece, el 21 de junio.</small></div></div>
+        <div class="ctrl"><div class="lab"><span>Retención</span><span class="val" id="retA-v">100%</span></div>
+        <input type="range" id="retA" min="80" max="115" step="1" value="100"></div>
+      </div>
+      <div class="bloc">
+        <div class="bloc-head"><div class="bloc-name">Retorno de la base de Cepeda<small>El petrismo con la maquinaria del Estado puede crecer, o desinflarse si cunde el desánimo.</small></div></div>
+        <div class="ctrl"><div class="lab"><span>Retención</span><span class="val" id="retC-v">100%</span></div>
+        <input type="range" id="retC" min="80" max="115" step="1" value="100"></div>
+      </div>
+    </div>
+
+    <div class="sec-title">Maquinaria y movilización</div>
     <div class="bloc">
-      <div class="bloc-head"><div class="bloc-name">Retorno de la base de Abelardo<small>Qué tanto de sus 10.3M de primera vuelta vuelve a las urnas, o crece, el 21 de junio.</small></div></div>
-      <div class="ctrl"><div class="lab"><span>Retención</span><span class="val" id="retA-v">100%</span></div>
-      <input type="range" id="retA" min="80" max="115" step="1" value="100"></div>
+      <div class="bloc-head"><div class="bloc-name">Factor maquinaria
+        <small>Efecto neto de clientelismo y movilización transaccional, concentrado en Costa Caribe y Pacífico. En la práctica rara vez mueve más de 2 a 4 puntos a nivel nacional, pero ahí se decide un margen estrecho.</small></div></div>
+      <div class="ctrl"><div class="lab"><span>Inclinación neta</span><span class="val" id="mval">0.0 pts</span></div>
+        <input type="range" class="split" id="machine" min="-5" max="5" step="0.5" value="0">
+        <div class="ends"><span class="l">◄ favorece a Cepeda</span><span class="r">favorece a Abelardo ►</span></div>
+      </div>
     </div>
-    <div class="bloc">
-      <div class="bloc-head"><div class="bloc-name">Retorno de la base de Cepeda<small>El petrismo con la maquinaria del Estado puede crecer, o desinflarse si cunde el desánimo.</small></div></div>
-      <div class="ctrl"><div class="lab"><span>Retención</span><span class="val" id="retC-v">100%</span></div>
-      <input type="range" id="retC" min="80" max="115" step="1" value="100"></div>
-    </div>
-  </div>
 
-  <div class="sec-title">Maquinaria y movilización</div>
-  <div class="bloc">
-    <div class="bloc-head"><div class="bloc-name">Factor maquinaria
-      <small>Efecto neto de clientelismo y movilización transaccional, concentrado en Costa Caribe y Pacífico. En la práctica rara vez mueve más de 2 a 4 puntos a nivel nacional, pero ahí se decide un margen estrecho.</small></div></div>
-    <div class="ctrl"><div class="lab"><span>Inclinación neta</span><span class="val" id="mval">0.0 pts</span></div>
-      <input type="range" class="split" id="machine" min="-5" max="5" step="0.5" value="0">
-      <div class="ends"><span class="l">◄ favorece a Cepeda</span><span class="r">favorece a Abelardo ►</span></div>
+    <div class="regions">
+      <div class="reg c"><h4>Fortines de Cepeda</h4><p>Pacífico (Chocó, Cauca, Nariño, Valle), Caribe de la Guajira a Sucre, y el sur profundo. Petrismo de convicción más palanca del Estado.</p></div>
+      <div class="reg a"><h4>Fortines de Abelardo</h4><p>Antioquia arrasada (Medellín 55%), Eje Cafetero, Santanderes e interior andino. Más Córdoba, su tierra natal, como voto de hijo de la región.</p></div>
+    </div>
+
+    <div class="note">El choque está en la Costa: el Estado petrista empuja por Cepeda, pero De La Espriella es cordobés y reclama afinidad regional sobre el mismo territorio. Por eso esos departamentos son los más elásticos en el mapa.</div>
+
     </div>
   </div>
-
-  <div class="regions">
-    <div class="reg c"><h4>Fortines de Cepeda</h4><p>Pacífico (Chocó, Cauca, Nariño, Valle), Caribe de la Guajira a Sucre, y el sur profundo. Petrismo de convicción más palanca del Estado.</p></div>
-    <div class="reg a"><h4>Fortines de Abelardo</h4><p>Antioquia arrasada (Medellín 55%), Eje Cafetero, Santanderes e interior andino. Más Córdoba, su tierra natal, como voto de hijo de la región.</p></div>
-  </div>
-
-  <div class="note">El choque está en la Costa: el Estado petrista empuja por Cepeda, pero De La Espriella es cordobés y reclama afinidad regional sobre el mismo territorio. Por eso esos departamentos son los más elásticos en el mapa.</div>
 
   <footer>
     <b>Cómo funciona.</b> Parte de los resultados de primera vuelta, reparte los votos de cada eliminado entre los dos finalistas (según cuántos se quedan en casa, cuántos votan en blanco y cómo se dividen los que sí votan por algún candidato), ajusta por el retorno de cada base y por la maquinaria, y convierte todo a votos sobre un censo de 41.4M. La probabilidad sale de 2.000 simulaciones que sacuden cada supuesto dentro de un rango razonable. Para conversar entre amigos: muevan los supuestos y discutan.<br><br>
@@ -311,6 +360,7 @@
     <span class="disc">No representa la posición de mi empleador ni de ninguna campaña política. Este modelo puede contener errores. Úsalo bajo tu propio criterio.</span>
   </footer>
 </div>
+<div class="flag-footer"></div>
 <div class="toast" id="toast">Enlace copiado</div>
 
 <script>
@@ -326,7 +376,7 @@ BLOCS.forEach(b=>b.pool = b.pct*FRV/100);
 const PRESETS = {
   base:       {paloma:[18,80,3],  fajardo:[40,40,18], lopez:[30,28,12], otros:[45,52,8],  retA:104, retC:104, machine:0},
   derecha:    {paloma:[8,90,2],   fajardo:[28,56,10], lopez:[24,36,8],  otros:[34,66,6],  retA:104, retC:98,  machine:1},
-  referendo:  {paloma:[30,70,5],  fajardo:[28,30,25], lopez:[18,20,18], otros:[40,45,12], retA:99,  retC:108, machine:-3},
+  voto_castigo:{paloma:[30,70,5],  fajardo:[28,30,25], lopez:[18,20,18], otros:[40,45,12], retA:99,  retC:108, machine:-3},
   abstencion: {paloma:[36,80,4],  fajardo:[56,42,20], lopez:[46,28,14], otros:[55,52,9],  retA:92,  retC:90,  machine:0},
 };
 const state = {retA:100, retC:100, machine:0};
@@ -389,13 +439,20 @@ BLOCS.forEach(b=>{
       </div>
     </div>
     <div class="bloc-body">
-      <div class="ctrl"><div class="lab"><span>Se queda en casa</span><span class="val" id="${b.id}-av">0%</span></div>
-        <input type="range" id="${b.id}-abst" min="0" max="100" step="1" value="0"></div>
-      <div class="ctrl"><div class="lab"><span>Vota en blanco</span><span class="val blk" id="${b.id}-bv">0%</span></div>
-        <input type="range" class="blank" id="${b.id}-blank" min="0" max="60" step="1" value="0"></div>
-      <div class="ctrl"><div class="lab"><span>De los que votan por alguno</span><span class="val" id="${b.id}-sv">0% Abe</span></div>
+      <div class="ctrl">
+        <div class="lab"><span>¿A quién van sus votos?</span><span class="val" id="${b.id}-sv">0% Abe</span></div>
         <input type="range" class="split" id="${b.id}-share" min="0" max="100" step="1" value="0">
-        <div class="ends"><span class="l">◄ Cepeda</span><span class="r">Abelardo ►</span></div></div>
+        <div class="ends"><span class="l">◄ Cepeda</span><span class="r">Abelardo ►</span></div>
+      </div>
+      <div class="advanced-section">
+        <button class="advanced-toggle" id="${b.id}-adv-btn" onclick="toggleAdv('${b.id}')">+ Abstención y voto en blanco ▾</button>
+        <div class="advanced-body" id="${b.id}-adv">
+          <div class="ctrl"><div class="lab"><span>Se queda en casa</span><span class="val" id="${b.id}-av">0%</span></div>
+            <input type="range" id="${b.id}-abst" min="0" max="100" step="1" value="0"></div>
+          <div class="ctrl"><div class="lab"><span>Vota en blanco</span><span class="val blk" id="${b.id}-bv">0%</span></div>
+            <input type="range" class="blank" id="${b.id}-blank" min="0" max="60" step="1" value="0"></div>
+        </div>
+      </div>
     </div>`;
   blocsEl.appendChild(el);
 
@@ -412,6 +469,18 @@ function syncBloc(id){
   const s=state[id].share;
   document.getElementById(id+"-sv").innerHTML=
     `<span style="color:var(--abe)">${s}% Abe</span> · <span style="color:var(--cep)">${100-s}% Cep</span>`;
+}
+function toggleAdv(id){
+  const body=document.getElementById(id+"-adv");
+  const btn=document.getElementById(id+"-adv-btn");
+  const open=body.classList.toggle("open");
+  btn.textContent=open?"− Abstención y voto en blanco ▲":"+ Abstención y voto en blanco ▾";
+}
+function toggleGlobalAdv(){
+  const body=document.getElementById("globalAdv");
+  const btn=document.getElementById("globalAdv-btn");
+  const open=body.classList.toggle("open");
+  btn.textContent=open?"− Ajustes detallados ▲":"＋ Ajustes detallados: abstención por candidato, retención de bases, maquinaria ▾";
 }
 ["retA","retC"].forEach(k=>{
   document.getElementById(k).addEventListener("input",e=>{state[k]=+e.target.value;document.getElementById(k+"-v").textContent=state[k]+"%";recompute();});
