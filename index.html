@@ -95,8 +95,8 @@
   .prob-lab{font-size:13px;color:var(--muted);margin-top:2px}
   .hist{display:flex;align-items:flex-end;gap:2px;height:70px;margin-top:16px}
   .hist .bin{flex:1;border-radius:2px 2px 0 0;min-height:1px;transition:height .3s}
-  .hist-axis{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;
-    font-size:9.5px;color:var(--muted);margin-top:4px}
+  .hist-axis{position:relative;height:16px;margin-top:4px;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted)}
+.hist-axis span{position:absolute;white-space:nowrap}
 
   .presets{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 22px;animation:rise .7s .1s ease both}
   .presets button{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.05em;
@@ -215,7 +215,13 @@
       <div class="prob-num" id="probNum">—</div>
       <div class="prob-lab" id="probLab"></div>
       <div class="hist" id="hist"></div>
-      <div class="hist-axis"><span>45% Abe</span><span>50%</span><span>60%+</span></div>
+      <div class="hist-axis">
+  <span style="left:0">45%</span>
+  <span style="left:16.7%;transform:translateX(-50%)">47.5%</span>
+  <span style="left:33.3%;transform:translateX(-50%)">50%</span>
+  <span style="left:66.7%;transform:translateX(-50%)">55%</span>
+  <span style="right:0">60%+</span>
+</div>
     </div>
   </div>
 
@@ -297,13 +303,15 @@ function modelFor(s){
     blancos+=blk;
     abe += active*st.share/100; cep += active*(1-st.share/100);
   });
-  const total=abe+cep;
-  let pa=abe/total*100; pa=Math.max(0,Math.min(100,pa+s.machine)); const pc=100-pa;
-  return {pa,pc,abeV:total*pa/100,cepV:total*pc/100,total,blancos,turnout:(total+blancos)/CENSO*100};
+  const candTotal=abe+cep;
+  let abeShare=abe/candTotal*100;
+  abeShare=Math.max(0,Math.min(100,abeShare+s.machine));
+  const abeV=candTotal*abeShare/100, cepV=candTotal*(100-abeShare)/100;
+  const grandTotal=candTotal+blancos;
+  const pa=abeV/grandTotal*100, pc=cepV/grandTotal*100;
+  return {pa,pc,abeV,cepV,total:candTotal,blancos,turnout:grandTotal/CENSO*100};
 }
 function cloneState(){const c={retA:state.retA,retC:state.retC,machine:state.machine};BLOCS.forEach(b=>c[b.id]={abst:state[b.id].abst,share:state[b.id].share,blank:state[b.id].blank});return c;}
-const ANCHOR = modelFor(PRESETS.base.__resolved||resolve(PRESETS.base)).pa;
-function resolve(p){const c={retA:p.retA,retC:p.retC,machine:p.machine};BLOCS.forEach(b=>c[b.id]={abst:p[b.id][0],share:p[b.id][1]});return c;}
 
 function fmtM(v){return (v/1e6).toFixed(2)+"M";}
 function fmtK(v){return Math.round(v).toLocaleString('es-CO');}
@@ -379,7 +387,7 @@ function monteCarlo(N){
   for(let i=0;i<N;i++){
     const s={retA:clamp(base.retA+randn()*4,80,118),retC:clamp(base.retC+randn()*4,80,118),machine:clamp(base.machine+randn()*1.6,-6,6)};
     BLOCS.forEach(b=>{s[b.id]={abst:clamp(base[b.id].abst+randn()*8,0,100),share:clamp(base[b.id].share+randn()*9,0,100),blank:clamp((base[b.id].blank||0)+randn()*5,0,60)};});
-    const pa=modelFor(s).pa; if(pa>50)wins++;
+    const {pa,pc}=modelFor(s); if(pa>pc)wins++;
     let bi=Math.floor((pa-45)/ (15/20)); bi=clamp(bi,0,19); bins[bi]++;
   }
   return {p:wins/N*100,bins,N};
@@ -414,7 +422,7 @@ function recompute(){
   v.innerHTML = lead<=1 ? `Proyección: <span style="color:var(--cream)">empate técnico</span>.`
     : `Proyección: <span style="color:${wc}">${wn}</span> ${tone}.`;
   const vmar=Math.abs(m.abeV-m.cepV);
-  const blkPct=(m.blancos/(m.total+m.blancos)*100);
+  const blkPct=100-m.pa-m.pc;
   document.getElementById("margin").innerHTML=
     `Margen <b>${lead.toFixed(1)} pts</b> · <b>${fmtK(vmar)}</b> votos<br>`+
     `Voto en blanco <b>~${fmtM(m.blancos)}</b> (<b>${blkPct.toFixed(1)}%</b> de votos válidos)<br>`+
